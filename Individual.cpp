@@ -96,6 +96,6 @@ void Individual::evaluate(double expected) {
     m_value = std::abs(accumulator - expected);
 }
 
-double Individual::get_value() const {
+double Individual::getValue() const {
     return m_value;
 }

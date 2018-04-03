@@ -14,7 +14,7 @@ public:
     Individual(const Individual& a, const Individual& b);
     void mutate();
     void evaluate(double);
-    double get_value() const;
+    double getValue() const;
     void print() const;
     bool operator < (const Individual& ind) const;
 

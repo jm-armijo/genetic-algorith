@@ -13,10 +13,10 @@ public:
     Population(int);
     void evaluate();
     void select();
-    void reproduce();
+    void crossover();
     void mutate();
-    void discardInvalid();
-    void printBest();
+    double getTopScore() const;
+    void printTopIndividual() const;
 };
 
 #endif // __JM_GENETIC_ALGORITHM_POPULATION
