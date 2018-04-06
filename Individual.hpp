@@ -5,18 +5,18 @@
 #include <vector>
 
 class Individual {
+    double m_value;
     unsigned m_num_genes;
     std::vector<char> m_genes;
-    double m_value;
 
 public:
     Individual();
     Individual(const Individual& a, const Individual& b);
-    void mutate();
     void evaluate(double);
-    double getValue() const;
+    void mutate();
     void print() const;
     bool operator < (const Individual& ind) const;
+    double getValue() const;
     static unsigned calculateNumGenes(unsigned num_args = 0);
 
 // Some utility methods

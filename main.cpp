@@ -5,9 +5,8 @@ int main() {
     int num_generations {3};
     std::vector<double> expected {4.0};
 
-    int i = 0;
-    // population should be 10*num_genes
-    Population pop(8); // initialise
+    int i {0};
+    Population pop; // initialise
     do {
         pop.evaluate(expected);
 

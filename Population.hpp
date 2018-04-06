@@ -10,6 +10,7 @@ class Population {
     std::vector<Individual> m_individuals;
     
 public:
+    Population();
     void evaluate(const std::vector<double>& expected);
     void select();
     void crossover();

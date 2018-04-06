@@ -2,8 +2,14 @@
 #include <algorithm>
 #include "Population.hpp"
 
-Population::Population(int size) : m_num_generation(1), m_size(size) {
-    for(unsigned i=0; i<m_size; ++i) {
+Population::Population() : m_num_generation(1) {
+    unsigned num_args = 2;
+    unsigned num_genes = Individual::calculateNumGenes(num_args);
+
+    // Population should be 10*num_genes
+    m_size = 10*num_genes;
+
+    for(unsigned i {0}; i<m_size; ++i) {
         Individual ind;
         m_individuals.push_back(ind);
     }

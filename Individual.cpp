@@ -6,12 +6,26 @@
 std::random_device Individual::m_rd;
 std::mt19937 Individual::m_rand_generator(Individual::m_rd());
 
-Individual::Individual() : m_num_genes(5), m_value(0) {
-    for (unsigned i = 0; i<m_num_genes; ++i) {
+Individual::Individual() : m_value(std::numeric_limits<double>::max()) {
+    m_num_genes = calculateNumGenes();
+    for (unsigned i {0}; i<m_num_genes; ++i) {
         if (i%2==0)
             m_genes.push_back(_generate_rand_value());
         else
             m_genes.push_back(_generate_rand_operator());
+    }
+}
+
+Individual::Individual(const Individual& a, const Individual& b) : m_value(std::numeric_limits<double>::max()) {
+    std::uniform_int_distribution<> gene_selector(0,1);
+    m_num_genes = a.m_num_genes;
+
+    for (unsigned i {0}; i<m_num_genes; ++i) {
+        int selector = gene_selector(m_rand_generator);
+        if (selector == 0)
+            m_genes.push_back(a.m_genes[i]);
+        else
+            m_genes.push_back(b.m_genes[i]);
     }
 }
 
@@ -33,18 +47,6 @@ char Individual::_generate_rand_value() const {
     std::uniform_int_distribution<> value_distr(48,57);
 
     return static_cast<char>(value_distr(m_rand_generator));
-}
-
-Individual::Individual(const Individual& a, const Individual& b) : m_num_genes(a.m_num_genes), m_value(0) {
-    std::uniform_int_distribution<> gene_selector(0,1);
-
-    for (unsigned i=0; i<m_num_genes; ++i) {
-        int selector = gene_selector(m_rand_generator);
-        if (selector == 0)
-            m_genes.push_back(a.m_genes[i]);
-        else
-            m_genes.push_back(b.m_genes[i]);
-    }
 }
 
 void Individual::print() const {
