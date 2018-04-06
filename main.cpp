@@ -2,13 +2,14 @@
 #include <iostream>
 
 int main() {
-    int num_generations = 3;
+    int num_generations {3};
+    std::vector<double> expected {4.0};
 
     int i = 0;
     // population should be 10*num_genes
     Population pop(8); // initialise
     do {
-        pop.evaluate();
+        pop.evaluate(expected);
 
         if (pop.getTopScore() == 0) {
             pop.printTopIndividual();

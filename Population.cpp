@@ -9,9 +9,11 @@ Population::Population(int size) : m_num_generation(1), m_size(size) {
     }
 }
 
-void Population::evaluate() {
-    for (auto &ind : m_individuals) {
-        ind.evaluate(4);
+void Population::evaluate(const std::vector<double>& expected) {
+    for (auto &val : expected) {
+        for (auto &ind : m_individuals) {
+            ind.evaluate(val);
+        }
     }
     std::sort(m_individuals.begin(), m_individuals.end());
     std::cout << "Best score " << m_individuals[0].getValue() << " by ";
