@@ -1,4 +1,4 @@
-CXXFLAGS = -std=c++11 -pedantic -Werror -Wall -I.
+CXXFLAGS = -std=c++11 -pedantic -Werror -Wall -g -I.
 CXX = g++
 
 run: main.o
