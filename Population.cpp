@@ -25,9 +25,9 @@ void Population::select() {
 void Population::crossover() {
     std::vector<Individual> individuals;
 
-    for (unsigned i = 0; i < m_individuals.size()/2; i+=2) {
-        for (unsigned i=0; i<4; ++i) {
-            Individual ind(m_individuals[i], m_individuals[i+1]);
+    for (unsigned i {0}; i < m_individuals.size()/2; i+=2) {
+        for (unsigned j {0}; j<4; ++j) {
+            Individual ind(m_individuals[j], m_individuals[j+1]);
             individuals.push_back(ind);
         }
     }
