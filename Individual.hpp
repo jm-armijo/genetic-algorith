@@ -17,6 +17,7 @@ public:
     double getValue() const;
     void print() const;
     bool operator < (const Individual& ind) const;
+    static unsigned calculateNumGenes(unsigned num_args = 0);
 
 // Some utility methods
 private:

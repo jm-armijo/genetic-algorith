@@ -99,6 +99,11 @@ void Individual::evaluate(double expected) {
     }
 }
 
+unsigned Individual::calculateNumGenes(unsigned num_args) {
+    static unsigned num_genes = 5*num_args + (1 - (5*num_args)%2);
+    return num_genes;
+}
+
 double Individual::getValue() const {
     return m_value;
 }
