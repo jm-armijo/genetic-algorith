@@ -71,29 +71,32 @@ bool Individual::operator < (const Individual& ind) const {
 void Individual::evaluate(double expected) {
     double accumulator {0.0};
     char op = '+';
+    bool error = false;
 
-    for (unsigned i=0; i<m_num_genes; ++i) {
+    for (unsigned i=0; i<m_num_genes && !error; ++i) {
         if (i%2==0) {
             int value = static_cast<int>(m_genes[i]) - 48;
-            if (op == '+')
+            if (op == '+') {
                 accumulator += value;
-            else if (op == '-')
+            } else if (op == '-') {
                 accumulator -= value;
-            else if (op == '*')
+            } else if (op == '*') {
                 accumulator *= value;
-            else if (op == '/') {
-                if (value == 0) {
-                    m_value = std::numeric_limits<double>::max();
-                    break;
-                }
+            } else if (op == '/' && value != 0) {
                 accumulator /= value;
+            } else  {
+                error = true;
             }
         } else {
             op = m_genes[i];
         }
     }
 
-    m_value = std::abs(accumulator - expected);
+    if (error) {
+        m_value = std::numeric_limits<double>::max();
+    } else {
+        m_value = std::abs(accumulator - expected);
+    }
 }
 
 double Individual::getValue() const {
