@@ -2,7 +2,8 @@
 #include <algorithm>
 #include "Population.hpp"
 
-Population::Population() : m_num_generation(1) {
+Population::Population() : m_num_generation(1)
+{
     unsigned num_args = 2;
     unsigned num_genes = Individual::calculateNumGenes(num_args);
 
@@ -15,7 +16,8 @@ Population::Population() : m_num_generation(1) {
     }
 }
 
-void Population::evaluate(const std::vector<double>& expected) {
+void Population::evaluate(const std::vector<double>& expected)
+{
     for (auto &val : expected) {
         for (auto &ind : m_individuals) {
             ind.evaluate(val);
@@ -26,11 +28,13 @@ void Population::evaluate(const std::vector<double>& expected) {
     m_individuals[0].print();
 }
 
-void Population::select() {
+void Population::select()
+{
     // should be used to select individuals for crossover (instead of picking by order)
 }
 
-void Population::crossover() {
+void Population::crossover()
+{
     std::vector<Individual> individuals;
 
     for (unsigned i {0}; i < m_individuals.size()/2; i+=2) {
@@ -43,7 +47,8 @@ void Population::crossover() {
     ++m_num_generation;
 }
 
-void Population::mutate() {
+void Population::mutate()
+{
 
     std::random_device rd;
     std::mt19937 rand_generator(rd());
@@ -53,10 +58,12 @@ void Population::mutate() {
     m_individuals[individual].mutate();
 }
 
-double Population::getTopScore() const {
+double Population::getTopScore() const
+{
     return m_individuals[0].getValue();
 }
 
-void Population::printTopIndividual() const {
+void Population::printTopIndividual() const
+{
     m_individuals[0].print();
 }
