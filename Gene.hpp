@@ -5,17 +5,19 @@
 
 class Gene {
 public:
-    enum Type {Variable, Operator};
-
     Gene() {}
-    Gene(Type type, unsigned num_args = 0);
+    Gene(unsigned gene_count, unsigned num_args);
 
     unsigned getValue() const;
+    void mutate();
     static double evaluate(const std::vector<Gene>& genes, double expected);
 
 private:
+    int _generateValue();
     bool _isOperator(char op) const;
+    unsigned m_gene_id;
     unsigned m_value;
+    unsigned m_num_args;
 
 private: // Random number generation attributes
     static std::random_device m_rd;

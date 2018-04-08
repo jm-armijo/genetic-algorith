@@ -3,14 +3,29 @@
 std::random_device Gene::m_rd;
 std::mt19937 Gene::m_rand_generator(Gene::m_rd());
 
-Gene::Gene(Type type, unsigned num_args) {
-    if (type == Type::Operator) {
-        std::uniform_int_distribution<> value_distr(0, 3);
-        m_value = static_cast<unsigned>(value_distr(m_rand_generator));
+Gene::Gene(unsigned gene_count, unsigned num_args) :
+        m_gene_id(gene_count),
+        m_num_args(num_args)
+{
+    m_value = _generateValue();
+}
+
+void Gene::mutate()
+{
+    m_value = _generateValue();
+}
+
+int Gene::_generateValue()
+{
+    int value;
+    if (m_gene_id%2==0) {
+        std::uniform_int_distribution<> value_distr(0, m_num_args - 1);
+        value = static_cast<unsigned>(value_distr(m_rand_generator));
     } else {
-        std::uniform_int_distribution<> value_distr(0, num_args - 1);
-        m_value = static_cast<unsigned>(value_distr(m_rand_generator));
+        std::uniform_int_distribution<> value_distr(0, 3);
+        value = static_cast<unsigned>(value_distr(m_rand_generator));
     }
+    return value;
 }
 
 unsigned Gene::getValue() const {

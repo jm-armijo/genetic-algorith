@@ -1,25 +1,25 @@
 #ifndef __JM_GENETIC_ALGORITHM_INDIVIDUAL
 #define __JM_GENETIC_ALGORITHM_INDIVIDUAL
 
+#include <cmath>
 #include <random>
 #include <vector>
 #include "Gene.hpp"
 
 class Individual {
-    unsigned m_num_dimensions;
-    double m_value;
+    unsigned m_num_args;
     unsigned m_num_genes;
+    double m_value = std::numeric_limits<double>::max();
     std::vector<Gene> m_genes;
 
 public:
-    Individual(unsigned num_dimensions);
+    Individual(unsigned num_args, unsigned num_genes);
     Individual(const Individual& a, const Individual& b);
     void evaluate(double);
     void mutate();
     void print() const;
     bool operator < (const Individual& ind) const;
     double getValue() const;
-    static unsigned calculateNumGenes(unsigned num_args = 0);
 
 // Random number generation attributes
 private:
