@@ -11,10 +11,10 @@ public:
     Gene(Type type, unsigned num_args = 0);
 
     unsigned getValue() const;
-    bool isOperator(char op) const;
     static double evaluate(const std::vector<Gene>& genes, double expected);
 
 private:
+    bool _isOperator(char op) const;
     unsigned m_value;
 
 private: // Random number generation attributes

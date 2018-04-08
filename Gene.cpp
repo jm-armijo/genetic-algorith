@@ -23,7 +23,7 @@ unsigned Gene::getValue() const {
 //      44 -->  2
 //  - = 45 -->  3
 //  / = 47 -->  4
-bool Gene::isOperator(char op) const {
+bool Gene::_isOperator(char op) const {
     unsigned op_val = static_cast<unsigned>(op) - 42;
 
     bool response = false;
@@ -45,13 +45,13 @@ double Gene::evaluate(const std::vector<Gene>& genes, double expected)
     for (unsigned i=1; i<genes.size() && !error; ++i) {
         if (i%2==0) {
             int value = genes[i].getValue();
-            if (op.isOperator('+')) {
+            if (op._isOperator('+')) {
                 accumulator += value;
-            } else if (op.isOperator('-')) {
+            } else if (op._isOperator('-')) {
                 accumulator -= value;
-            } else if (op.isOperator('*')) {
+            } else if (op._isOperator('*')) {
                 accumulator *= value;
-            } else if (op.isOperator('/') && value != 0) {
+            } else if (op._isOperator('/') && value != 0) {
                 accumulator /= value;
             } else  {
                 error = true;
