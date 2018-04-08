@@ -6,106 +6,72 @@
 std::random_device Individual::m_rd;
 std::mt19937 Individual::m_rand_generator(Individual::m_rd());
 
-Individual::Individual() : m_value(std::numeric_limits<double>::max()) {
-    m_num_genes = calculateNumGenes();
+Individual::Individual(unsigned num_dimensions) :
+        m_num_dimensions(num_dimensions),
+        m_value(std::numeric_limits<double>::max()),
+        m_num_genes(calculateNumGenes())
+{
     for (unsigned i {0}; i<m_num_genes; ++i) {
-        if (i%2==0)
-            m_genes.push_back(_generate_rand_value());
-        else
-            m_genes.push_back(_generate_rand_operator());
+        if (i%2==0) {
+            m_genes.push_back(Gene(Gene::Variable, m_num_dimensions));
+        } else {
+            m_genes.push_back(Gene(Gene::Operator));
+        }
     }
 }
 
-Individual::Individual(const Individual& a, const Individual& b) : m_value(std::numeric_limits<double>::max()) {
+Individual::Individual(const Individual& a, const Individual& b) : m_value(std::numeric_limits<double>::max())
+{
     std::uniform_int_distribution<> gene_selector(0,1);
     m_num_genes = a.m_num_genes;
 
     for (unsigned i {0}; i<m_num_genes; ++i) {
         int selector = gene_selector(m_rand_generator);
-        if (selector == 0)
+        if (selector == 0) {
             m_genes.push_back(a.m_genes[i]);
-        else
+        } else {
             m_genes.push_back(b.m_genes[i]);
+        }
     }
 }
 
-char Individual::_generate_rand_operator() const {
-    std::uniform_int_distribution<> operator_distr(42,45);
-
-    // * = 42
-    // + = 43
-    // - = 45
-    // / = 47
-    int op = operator_distr(m_rand_generator);
-    if (op == 44)
-        op = 47;
-
-    return static_cast<char>(op);
-}
-
-char Individual::_generate_rand_value() const {
-    std::uniform_int_distribution<> value_distr(48,57);
-
-    return static_cast<char>(value_distr(m_rand_generator));
-}
-
-void Individual::print() const {
-    for (auto &c : m_genes) {
-        std::cout << c ;
+void Individual::print() const
+{
+    for (const auto &c : m_genes) {
+        std::cout << "<" << c.getValue() << ">";
     }
     std::cout << std::endl;
 }
 
-void Individual::mutate() {
+void Individual::mutate()
+{
     std::uniform_int_distribution<> gene_selector(0,m_num_genes-1);
 
     int gen_number = gene_selector(m_rand_generator);
-    if (gen_number%2==0)
-        m_genes[gen_number] = _generate_rand_value();
-    else
-        m_genes[gen_number] = _generate_rand_operator();
+    if (gen_number%2==0) {
+        m_genes[gen_number] = Gene(Gene::Variable, m_num_dimensions);
+    } else {
+        m_genes[gen_number] = Gene(Gene::Operator);
+    }
 }
 
-bool Individual::operator < (const Individual& ind) const {
+bool Individual::operator < (const Individual& ind) const
+{
     return (m_value < ind.m_value);
 }
 
-void Individual::evaluate(double expected) {
-    double accumulator {0.0};
-    char op = '+';
-    bool error = false;
-
-    for (unsigned i=0; i<m_num_genes && !error; ++i) {
-        if (i%2==0) {
-            int value = static_cast<int>(m_genes[i]) - 48;
-            if (op == '+') {
-                accumulator += value;
-            } else if (op == '-') {
-                accumulator -= value;
-            } else if (op == '*') {
-                accumulator *= value;
-            } else if (op == '/' && value != 0) {
-                accumulator /= value;
-            } else  {
-                error = true;
-            }
-        } else {
-            op = m_genes[i];
-        }
-    }
-
-    if (error) {
-        m_value = std::numeric_limits<double>::max();
-    } else {
-        m_value = std::abs(accumulator - expected);
-    }
+void Individual::evaluate(double expected)
+{
+    m_value = Gene::evaluate(m_genes, expected);
 }
 
-unsigned Individual::calculateNumGenes(unsigned num_args) {
+unsigned Individual::calculateNumGenes(unsigned num_args)
+{
     static unsigned num_genes = 5*num_args + (1 - (5*num_args)%2);
     return num_genes;
 }
 
-double Individual::getValue() const {
+double Individual::getValue() const
+{
     return m_value;
 }

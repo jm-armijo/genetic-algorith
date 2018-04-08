@@ -3,14 +3,16 @@
 
 #include <random>
 #include <vector>
+#include "Gene.hpp"
 
 class Individual {
+    unsigned m_num_dimensions;
     double m_value;
     unsigned m_num_genes;
-    std::vector<char> m_genes;
+    std::vector<Gene> m_genes;
 
 public:
-    Individual();
+    Individual(unsigned num_dimensions);
     Individual(const Individual& a, const Individual& b);
     void evaluate(double);
     void mutate();
@@ -18,11 +20,6 @@ public:
     bool operator < (const Individual& ind) const;
     double getValue() const;
     static unsigned calculateNumGenes(unsigned num_args = 0);
-
-// Some utility methods
-private:
-    char _generate_rand_value() const;
-    char _generate_rand_operator() const;
 
 // Random number generation attributes
 private:

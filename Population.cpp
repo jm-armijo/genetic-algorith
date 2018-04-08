@@ -4,6 +4,7 @@
 
 Population::Population() : m_num_generation(1)
 {
+    unsigned num_dimensions = 10;
     unsigned num_args = 2;
     unsigned num_genes = Individual::calculateNumGenes(num_args);
 
@@ -11,7 +12,7 @@ Population::Population() : m_num_generation(1)
     m_size = 10*num_genes;
 
     for(unsigned i {0}; i<m_size; ++i) {
-        Individual ind;
+        Individual ind(num_dimensions);
         m_individuals.push_back(ind);
     }
 }
