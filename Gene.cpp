@@ -53,26 +53,33 @@ bool Gene::_isOperator(char op) const {
 
 double Gene::evaluate(const std::vector<Gene>& genes, double expected)
 {
-    double accumulator = static_cast<double>(genes[0].getValue());
+    unsigned num_genes = genes.size();
     bool error = false;
-    Gene op;
+    double accumulator;
 
-    for (unsigned i=1; i<genes.size() && !error; ++i) {
-        if (i%2==0) {
-            int value = genes[i].getValue();
-            if (op._isOperator('+')) {
-                accumulator += value;
-            } else if (op._isOperator('-')) {
-                accumulator -= value;
-            } else if (op._isOperator('*')) {
-                accumulator *= value;
-            } else if (op._isOperator('/') && value != 0) {
-                accumulator /= value;
-            } else  {
-                error = true;
+    if (num_genes <= 1) {
+        error = true;
+    } else {
+        accumulator = static_cast<double>(genes[0].getValue());
+        Gene op;
+
+        for (unsigned i=1; i<genes.size() && !error; ++i) {
+            if (i%2==0) {
+                int value = genes[i].getValue();
+                if (op._isOperator('+')) {
+                    accumulator += value;
+                } else if (op._isOperator('-')) {
+                    accumulator -= value;
+                } else if (op._isOperator('*')) {
+                    accumulator *= value;
+                } else if (op._isOperator('/') && value != 0) {
+                    accumulator /= value;
+                } else  {
+                    error = true;
+                }
+            } else {
+                op = genes[i];
             }
-        } else {
-            op = genes[i];
         }
     }
 
