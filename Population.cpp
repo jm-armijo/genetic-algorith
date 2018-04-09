@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "Population.hpp"
+#include "Random.hpp"
 
 Population::Population() : m_num_generation(1)
 {
@@ -49,12 +50,7 @@ void Population::crossover()
 
 void Population::mutate()
 {
-
-    std::random_device rd;
-    std::mt19937 rand_generator(rd());
-    std::uniform_int_distribution<> individual_distr(0, m_size - 1);
-
-    int individual = individual_distr(rand_generator);
+    int individual = Random::Uniform(0, m_size - 1);
     m_individuals[individual].mutate();
 }
 
