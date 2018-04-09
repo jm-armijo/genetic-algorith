@@ -1,7 +1,5 @@
 #include "Gene.hpp"
-
-std::random_device Gene::m_rd;
-std::mt19937 Gene::m_rand_generator(Gene::m_rd());
+#include "Random.hpp"
 
 Gene::Gene(unsigned gene_count, unsigned num_args) :
         m_gene_id(gene_count),
@@ -19,11 +17,9 @@ int Gene::_generateValue()
 {
     int value;
     if (m_gene_id%2==0) {
-        std::uniform_int_distribution<> value_distr(0, m_num_args - 1);
-        value = static_cast<unsigned>(value_distr(m_rand_generator));
+        value = static_cast<unsigned>(Random::Uniform(0, m_num_args-1));
     } else {
-        std::uniform_int_distribution<> value_distr(0, 3);
-        value = static_cast<unsigned>(value_distr(m_rand_generator));
+        value = static_cast<unsigned>(Random::Uniform(0, 3));
     }
     return value;
 }

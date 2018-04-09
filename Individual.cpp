@@ -1,9 +1,7 @@
 #include <iostream>
 #include <limits>
 #include "Individual.hpp"
-
-std::random_device Individual::m_rd;
-std::mt19937 Individual::m_rand_generator(Individual::m_rd());
+#include "Random.hpp"
 
 Individual::Individual(unsigned num_args, unsigned num_genes) :
         m_num_args(num_args),
@@ -16,11 +14,10 @@ Individual::Individual(unsigned num_args, unsigned num_genes) :
 
 Individual::Individual(const Individual& ind1, const Individual& ind2)
 {
-    std::uniform_int_distribution<> gene_selector(0,1);
     m_num_genes = ind1.m_num_genes;
 
     for (unsigned i {0}; i<m_num_genes; ++i) {
-        int selector = gene_selector(m_rand_generator);
+        int selector = Random::Uniform(0,1);
         if (selector == 0) {
             m_genes.push_back(ind1.m_genes[i]);
         } else {
@@ -39,9 +36,7 @@ void Individual::print() const
 
 void Individual::mutate()
 {
-    std::uniform_int_distribution<> gene_selector(0,m_num_genes-1);
-
-    int gen_number = gene_selector(m_rand_generator);
+    int gen_number = Random::Uniform(0, m_num_genes-1);
     m_genes[gen_number].mutate();
 }
 

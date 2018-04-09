@@ -2,7 +2,6 @@
 #define __JM_GENETIC_ALGORITHM_INDIVIDUAL
 
 #include <cmath>
-#include <random>
 #include <vector>
 #include "Gene.hpp"
 
@@ -20,11 +19,6 @@ public:
     void print() const;
     bool operator < (const Individual& ind) const;
     double getValue() const;
-
-// Random number generation attributes
-private:
-    static std::random_device m_rd;
-    static std::mt19937       m_rand_generator;
 };
 
 #endif // __JM_GENETIC_ALGORITHM_INDIVIDUAL
