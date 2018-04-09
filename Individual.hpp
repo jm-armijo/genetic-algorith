@@ -6,7 +6,6 @@
 #include "Gene.hpp"
 
 class Individual {
-    unsigned m_num_args;
     unsigned m_num_genes;
     double m_value = std::numeric_limits<double>::max();
     std::vector<Gene> m_genes;

@@ -4,11 +4,10 @@
 #include "Random.hpp"
 
 Individual::Individual(unsigned num_args, unsigned num_genes) :
-        m_num_args(num_args),
         m_num_genes(num_genes)
 {
     for (unsigned i {0}; i<m_num_genes; ++i) {
-        m_genes.push_back(Gene(i, m_num_args));
+        m_genes.push_back(Gene(i, num_args));
     }
 }
 
