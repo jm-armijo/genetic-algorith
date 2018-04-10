@@ -3,14 +3,8 @@
 #include "Population.hpp"
 #include "Random.hpp"
 
-Population::Population() : m_num_generation(1)
+Population::Population(unsigned size, unsigned num_args, unsigned num_genes) : m_size(size)
 {
-    unsigned num_args = 2;
-    unsigned num_genes = 11;
-
-    // Population should be 10*num_genes
-    m_size = 10*num_genes;
-
     for(unsigned i {0}; i<m_size; ++i) {
         Individual ind(num_args, num_genes);
         m_individuals.push_back(ind);
@@ -45,7 +39,6 @@ void Population::crossover()
         }
     }
     m_individuals = individuals;
-    ++m_num_generation;
 }
 
 void Population::mutate()

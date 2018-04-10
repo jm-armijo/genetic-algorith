@@ -5,12 +5,11 @@
 #include "Individual.hpp"
 
 class Population {
-    unsigned m_num_generation;
     unsigned m_size;
     std::vector<Individual> m_individuals;
     
 public:
-    Population();
+    Population(unsigned size, unsigned num_args, unsigned num_genes);
     void evaluate(const std::vector<double>& expected);
     void select();
     void crossover();
