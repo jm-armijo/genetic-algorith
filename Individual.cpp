@@ -28,7 +28,7 @@ Individual::Individual(const Individual& ind1, const Individual& ind2)
 void Individual::print() const
 {
     for (const auto &c : m_genes) {
-        std::cout << "<" << c.getValue() << ">";
+        std::cout << c.toString();
     }
     std::cout << std::endl;
 }
@@ -44,9 +44,9 @@ bool Individual::operator < (const Individual& ind) const
     return (m_value < ind.m_value);
 }
 
-void Individual::evaluate(double expected)
+void Individual::evaluate(const std::vector<double> &args, double expected)
 {
-    m_value = Gene::evaluate(m_genes, expected);
+    m_value = Gene::evaluate(m_genes, args, expected);
 }
 
 double Individual::getValue() const

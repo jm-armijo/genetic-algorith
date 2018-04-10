@@ -13,7 +13,7 @@ class Individual {
 public:
     Individual(unsigned num_args, unsigned num_genes);
     Individual(const Individual& a, const Individual& b);
-    void evaluate(double);
+    void evaluate(const std::vector<double> &args, double expected);
     void mutate();
     void print() const;
     bool operator < (const Individual& ind) const;

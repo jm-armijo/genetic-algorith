@@ -8,11 +8,12 @@ public:
     Gene(unsigned gene_count, unsigned num_args);
 
     unsigned getValue() const;
+    std::string toString() const;
     void mutate();
-    static double evaluate(const std::vector<Gene>& genes, double expected);
+    static double evaluate(const std::vector<Gene>& genes, const std::vector<double> &args, double expected);
 
 private:
-    Gene() {}
+    Gene();
     int _generateValue();
     bool _isOperator(char op) const;
     unsigned m_gene_id;

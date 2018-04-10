@@ -11,11 +11,11 @@ Population::Population(unsigned size, unsigned num_args, unsigned num_genes) : m
     }
 }
 
-void Population::evaluate(const std::vector<double>& expected)
+void Population::evaluate(const std::vector<double> &args, const std::vector<double>& expected)
 {
     for (auto &val : expected) {
         for (auto &ind : m_individuals) {
-            ind.evaluate(val);
+            ind.evaluate(args, val);
         }
     }
     std::sort(m_individuals.begin(), m_individuals.end());

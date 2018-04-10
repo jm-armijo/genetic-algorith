@@ -8,6 +8,10 @@ Gene::Gene(unsigned gene_count, unsigned num_args) :
     m_value = _generateValue();
 }
 
+Gene::Gene() : m_value(1)
+{
+}
+
 void Gene::mutate()
 {
     m_value = _generateValue();
@@ -28,40 +32,49 @@ unsigned Gene::getValue() const {
     return m_value;
 }
 
-// op   ascii  value
-//  * = 42 -->  0
-//  + = 43 -->  1
-//      44 -->  2
-//  - = 45 -->  3
-//  / = 47 -->  4
+std::string Gene::toString() const
+{
+    if (m_gene_id % 2 == 0) {
+        return "x" + std::to_string(m_value);
+    } else {
+        unsigned value = m_value;
+        if (value == 2) {
+            value = 5;
+        }
+        return std::string(1, static_cast<char>(value+42));
+    }
+}
+
+//   * = 42 = 0 + 42
+//   + = 43 = 1 + 42
+//   - = 45 = 3 + 42
+//   / = 47 = 5 + 42
 bool Gene::_isOperator(char op) const {
     unsigned op_val = static_cast<unsigned>(op) - 42;
 
     bool response = false;
     if (op_val == m_value) {
         response = true;
-    } else if (op_val == 4 && m_value == 2) {
+    } else if (op_val == 5 && m_value == 2) {
         response = true;
     }
 
     return response;
 }
 
-double Gene::evaluate(const std::vector<Gene>& genes, double expected)
+double Gene::evaluate(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
 {
     unsigned num_genes = genes.size();
     bool error = false;
-    double accumulator;
+    double accumulator {0.0};
 
     if (num_genes <= 1) {
         error = true;
     } else {
-        accumulator = static_cast<double>(genes[0].getValue());
         Gene op;
-
-        for (unsigned i=1; i<genes.size() && !error; ++i) {
+        for (unsigned i=0; i<genes.size() && !error; ++i) {
             if (i%2==0) {
-                int value = genes[i].getValue();
+                double value = args[genes[i].m_value];
                 if (op._isOperator('+')) {
                     accumulator += value;
                 } else if (op._isOperator('-')) {

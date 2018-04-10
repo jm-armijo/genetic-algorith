@@ -10,7 +10,7 @@ class Population {
     
 public:
     Population(unsigned size, unsigned num_args, unsigned num_genes);
-    void evaluate(const std::vector<double>& expected);
+    void evaluate(const std::vector<double> &args, const std::vector<double>& expected);
     void select();
     void crossover();
     void mutate();
