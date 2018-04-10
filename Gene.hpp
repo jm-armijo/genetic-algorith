@@ -3,6 +3,8 @@
 
 #include <random>
 
+enum class Type {Operator, Variable, Constant};
+
 class Gene {
 public:
     Gene(unsigned gene_count, unsigned num_args);
@@ -14,11 +16,13 @@ public:
 
 private:
     Gene();
-    int _generateValue();
+    Type _getNewType();
+    int  _getNewValue();
     bool _isOperator(char op) const;
     unsigned m_gene_id;
     unsigned m_value;
     unsigned m_num_args;
+    Type m_type;
 };
 
 #endif // __JM_GENETIC_ALGORITHM_GENE

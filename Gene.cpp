@@ -5,7 +5,8 @@ Gene::Gene(unsigned gene_count, unsigned num_args) :
         m_gene_id(gene_count),
         m_num_args(num_args)
 {
-    m_value = _generateValue();
+    m_type  = _getNewType();
+    m_value = _getNewValue();
 }
 
 Gene::Gene() : m_value(1)
@@ -14,16 +15,34 @@ Gene::Gene() : m_value(1)
 
 void Gene::mutate()
 {
-    m_value = _generateValue();
+    m_value = _getNewValue();
 }
 
-int Gene::_generateValue()
+Type Gene::_getNewType()
+{
+    Type type;
+    if (m_gene_id%2==0) {
+        if (Random::Uniform(0,9) > 7) {
+            type = Type::Constant;
+        } else {
+            type = Type::Variable;
+        }
+    } else {
+        type = Type::Operator;
+    }
+
+    return type;
+}
+
+int Gene::_getNewValue()
 {
     int value;
-    if (m_gene_id%2==0) {
+    if (m_type == Type::Variable) {
         value = static_cast<unsigned>(Random::Uniform(0, m_num_args-1));
-    } else {
+    } else if (m_type == Type::Operator) {
         value = static_cast<unsigned>(Random::Uniform(0, 3));
+    } else {
+        value = static_cast<unsigned>(Random::Uniform(0, 9));
     }
     return value;
 }
@@ -34,14 +53,16 @@ unsigned Gene::getValue() const {
 
 std::string Gene::toString() const
 {
-    if (m_gene_id % 2 == 0) {
+    if (m_type == Type::Variable) {
         return "x" + std::to_string(m_value);
-    } else {
+    } else if (m_type == Type::Operator) {
         unsigned value = m_value;
         if (value == 2) {
             value = 5;
         }
         return std::string(1, static_cast<char>(value+42));
+    } else {
+        return std::string(1, static_cast<char>(m_value+48));
     }
 }
 
@@ -73,8 +94,16 @@ double Gene::evaluate(const std::vector<Gene>& genes, const std::vector<double> 
     } else {
         Gene op;
         for (unsigned i=0; i<genes.size() && !error; ++i) {
-            if (i%2==0) {
-                double value = args[genes[i].m_value];
+            if (genes[i].m_type == Type::Operator) {
+                op = genes[i];
+            } else {
+                double value;
+                if (genes[i].m_type == Type::Variable) {
+                    value = args[genes[i].m_value];
+                } else {
+                    value = static_cast<double>(genes[i].m_value);
+                }
+
                 if (op._isOperator('+')) {
                     accumulator += value;
                 } else if (op._isOperator('-')) {
@@ -86,8 +115,6 @@ double Gene::evaluate(const std::vector<Gene>& genes, const std::vector<double> 
                 } else  {
                     error = true;
                 }
-            } else {
-                op = genes[i];
             }
         }
     }
