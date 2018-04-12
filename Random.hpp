@@ -6,6 +6,7 @@
 class Random {
 public:
     static int Uniform(int min, int max);
+    static int Binomial(int max);
 
 private:
     static std::random_device m_rd;

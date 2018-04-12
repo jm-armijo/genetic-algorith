@@ -8,3 +8,8 @@ int Random::Uniform(int min, int max) {
     return u_rand_distr(m_rand_generator);
 }
 
+int Random::Binomial(int max) {
+    std::binomial_distribution<> u_bin_distr(max, 0.5);
+    return u_bin_distr(m_rand_generator);
+}
+
