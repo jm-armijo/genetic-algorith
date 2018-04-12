@@ -7,6 +7,7 @@
 
 class Individual {
     unsigned m_num_genes;
+    unsigned m_num_evals;
     double m_value = std::numeric_limits<double>::max();
     std::vector<Gene> m_genes;
 

@@ -4,14 +4,18 @@
 #include "Random.hpp"
 
 Individual::Individual(unsigned num_args, unsigned num_genes) :
-        m_num_genes(num_genes)
+        m_num_genes(num_genes),
+        m_num_evals(0),
+        m_value(0)
 {
     for (unsigned i {0}; i<m_num_genes; ++i) {
         m_genes.push_back(Gene(i, num_args));
     }
 }
 
-Individual::Individual(const Individual& ind1, const Individual& ind2)
+Individual::Individual(const Individual& ind1, const Individual& ind2) :
+        m_num_evals(0),
+        m_value(0)
 {
     m_num_genes = ind1.m_num_genes;
 
@@ -46,7 +50,10 @@ bool Individual::operator < (const Individual& ind) const
 
 void Individual::evaluate(const std::vector<double> &args, double expected)
 {
-    m_value = Gene::evaluate(m_genes, args, expected);
+    ++m_num_evals;
+    m_value /= m_num_evals;
+    m_value *= (m_num_evals - 1);
+    m_value += Gene::evaluate(m_genes, args, expected) / m_num_evals;
 }
 
 double Individual::getValue() const
