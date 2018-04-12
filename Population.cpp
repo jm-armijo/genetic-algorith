@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 #include "Population.hpp"
 #include "Random.hpp"
 
@@ -11,21 +12,28 @@ Population::Population(unsigned size, unsigned num_args, unsigned num_genes) : m
     }
 }
 
-void Population::evaluate(const std::vector<double> &args, const std::vector<double>& expected)
+void Population::evaluate(const std::vector<double> &args, double expected)
 {
-    for (auto &val : expected) {
-        for (auto &ind : m_individuals) {
-            ind.evaluate(args, val);
-        }
+    for (auto &ind : m_individuals) {
+        ind.evaluate(args, expected);
     }
-    std::sort(m_individuals.begin(), m_individuals.end());
-    std::cout << "Best score " << m_individuals[0].getValue() << " by ";
-    m_individuals[0].print();
 }
 
 void Population::select()
 {
     // should be used to select individuals for crossover (instead of picking by order)
+    std::vector<Individual> selected;
+
+    for (unsigned i {0}; i < m_size; ++i) {
+        int ind = Random::Binomial(2*m_size - 1) - m_size;
+        if (ind < 0) {
+            ind = std::abs(ind+1);
+        }
+
+        selected.push_back(m_individuals[ind]);
+    }
+
+    m_individuals = selected;
 }
 
 void Population::crossover()
