@@ -1,6 +1,7 @@
-#include <iostream>
 #include <algorithm>
+#include <cassert>
 #include <cmath>
+#include <iostream>
 #include "Population.hpp"
 #include "Random.hpp"
 
@@ -10,18 +11,18 @@ Population::Population(unsigned size, unsigned num_args, unsigned num_genes) : m
         Individual ind(num_args, num_genes);
         m_individuals.push_back(ind);
     }
+    assert(m_individuals.size() == m_size);
 }
 
-void Population::evaluate(const std::vector<double> &args, double expected)
+void Population::fitness(const std::vector<double> &args, double expected)
 {
     for (auto &ind : m_individuals) {
-        ind.evaluate(args, expected);
+        ind.fitness(args, expected);
     }
 }
 
 void Population::select()
 {
-    // should be used to select individuals for crossover (instead of picking by order)
     std::vector<Individual> selected;
 
     for (unsigned i {0}; i < m_size; ++i) {
@@ -29,24 +30,25 @@ void Population::select()
         if (ind < 0) {
             ind = std::abs(ind+1);
         }
-
         selected.push_back(m_individuals[ind]);
     }
 
-    m_individuals = selected;
+    assert(m_individuals.size() == selected.size());
+    m_individuals = std::move(selected);
 }
 
 void Population::crossover()
 {
-    std::vector<Individual> individuals;
+    std::vector<Individual> children;
 
-    for (unsigned i {0}; i < m_individuals.size()/2; i+=2) {
-        for (unsigned j {0}; j<4; ++j) {
-            Individual ind(m_individuals[j], m_individuals[j+1]);
-            individuals.push_back(ind);
-        }
+    for (unsigned i {0}; i < m_individuals.size(); i+=2) {
+        Individual child1(m_individuals[i], m_individuals[i+1]);
+        Individual child2(m_individuals[i], m_individuals[i+1]);
+        children.push_back(child1);
+        children.push_back(child2);
     }
-    m_individuals = individuals;
+    assert(m_individuals.size() == children.size());
+    m_individuals = std::move(children);
 }
 
 void Population::mutate()

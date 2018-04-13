@@ -1,11 +1,12 @@
 #ifndef __JM_GENETIC_ALGORITHM_INDIVIDUAL
 #define __JM_GENETIC_ALGORITHM_INDIVIDUAL
 
-#include <cmath>
+#include <limits>
 #include <vector>
 #include "Gene.hpp"
 
 class Individual {
+    int m_id;
     unsigned m_num_genes;
     unsigned m_num_evals;
     double m_value = std::numeric_limits<double>::max();
@@ -14,7 +15,7 @@ class Individual {
 public:
     Individual(unsigned num_args, unsigned num_genes);
     Individual(const Individual& a, const Individual& b);
-    void evaluate(const std::vector<double> &args, double expected);
+    void fitness(const std::vector<double> &args, double expected);
     void mutate();
     void print() const;
     bool operator < (const Individual& ind) const;

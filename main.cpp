@@ -2,29 +2,40 @@
 #include <iostream>
 
 double mistery_func(double x0, double x1) {
-    return ((3*x0) + x1)/x0;
+    return x0 + x0 + x1;
+    //    return ((3*x0) + x1)/x0;
+}
+
+std::vector<std::vector<double>> getArgs()
+{
+    std::vector<std::vector<double>> args_list;
+
+    args_list.push_back({7.0, 2.0});
+    args_list.push_back({3.0, 4.0});
+
+    return args_list;
 }
 
 int main() {
-    int num_generations {100};
+    int num_generations {10000};
 
-    std::vector<std::vector<double>> args_list;
+    std::vector<std::vector<double>> &&args_list = getArgs();
     std::vector<double> expected_vals;
 
-    args_list.push_back({1.0, 1.0});
-    args_list.push_back({3.0, 4.0});
-    expected_vals.push_back(mistery_func(1.0, 1.0));
-    expected_vals.push_back(mistery_func(3.0, 4.0));
+    for (unsigned i {0}; i<args_list.size(); ++i) {
+        std::vector<double> args = args_list[0];
+        expected_vals.push_back(mistery_func(args[0], args[1]));
+    }
 
-    unsigned num_args  = args_list[0].size();
-    unsigned num_genes = (3*num_args) + (1 - (3*num_args)%2);
-    unsigned pop_size  = 10*num_genes;
+    unsigned num_args  = 2; //args_list[0].size();
+    unsigned num_genes = 5;
+    unsigned pop_size  = 1000;
 
     int i {0};
     Population pop(pop_size, num_args, num_genes); // initialise
     do {
         for (unsigned j {0}; j < expected_vals.size(); ++j) {
-            pop.evaluate(args_list[j], expected_vals[j]);
+            pop.fitness(args_list[j], expected_vals[j]);
         }
 
         pop.printTopIndividual();

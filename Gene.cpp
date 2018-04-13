@@ -1,3 +1,4 @@
+#include <cassert>
 #include "Gene.hpp"
 #include "Random.hpp"
 
@@ -9,16 +10,28 @@ Gene::Gene(unsigned gene_count, unsigned num_args) :
     m_value = _getNewValue();
 }
 
-Gene::Gene() : m_value(1)
+Gene::Gene() :
+        m_gene_id(0),
+        m_num_args(0),
+        m_type(Type::Operator),
+        m_value(1)
 {
 }
 
 void Gene::mutate()
 {
+    unsigned gene_id  = m_gene_id;
+    unsigned num_args = m_num_args;
+    Type type         = m_type;
+
     m_value = _getNewValue();
+
+    assert(gene_id  == m_gene_id);
+    assert(num_args == m_num_args);
+    assert(type     == m_type);
 }
 
-Type Gene::_getNewType()
+Type Gene::_getNewType() const
 {
     Type type;
     if (m_gene_id%2==0) {
@@ -34,7 +47,7 @@ Type Gene::_getNewType()
     return type;
 }
 
-int Gene::_getNewValue()
+int Gene::_getNewValue() const
 {
     int value;
     if (m_type == Type::Variable) {
@@ -83,38 +96,49 @@ bool Gene::_isOperator(char op) const {
     return response;
 }
 
-double Gene::evaluate(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
+double Gene::_evaluate(const std::vector<double>& args) const {
+    double value;
+    if (m_type == Type::Variable) {
+        value = args[m_value];
+    } else {
+        value = static_cast<double>(m_value);
+    }
+    return value;
+}
+
+double Gene::_doOperation(const Gene& op, double val1, double val2)
+{
+    double response;
+    if (op._isOperator('+')) {
+        response = val1 + val2;
+    } else if (op._isOperator('-')) {
+        response = val1 - val2;
+    } else if (op._isOperator('*')) {
+        response = val1 * val2;
+    } else if (op._isOperator('/') && val2 != 0) {
+        response = val1 / val2;
+    } else  {
+        response = std::numeric_limits<double>::max();
+    }
+    return response;
+}
+
+double Gene::fitness(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
 {
     unsigned num_genes = genes.size();
     bool error = false;
     double accumulator {0.0};
 
-    if (num_genes <= 1) {
-        error = true;
-    } else {
-        Gene op;
-        for (unsigned i=0; i<genes.size() && !error; ++i) {
-            if (genes[i].m_type == Type::Operator) {
-                op = genes[i];
-            } else {
-                double value;
-                if (genes[i].m_type == Type::Variable) {
-                    value = args[genes[i].m_value];
-                } else {
-                    value = static_cast<double>(genes[i].m_value);
-                }
+    Gene op;
+    for (unsigned i {0}; i<num_genes && !error; ++i) {
+        if (genes[i].m_type == Type::Operator) {
+            op = genes[i];
+        } else {
+            double value = genes[i]._evaluate(args);
 
-                if (op._isOperator('+')) {
-                    accumulator += value;
-                } else if (op._isOperator('-')) {
-                    accumulator -= value;
-                } else if (op._isOperator('*')) {
-                    accumulator *= value;
-                } else if (op._isOperator('/') && value != 0) {
-                    accumulator /= value;
-                } else  {
-                    error = true;
-                }
+            accumulator = _doOperation(op, accumulator, value);
+            if (accumulator == std::numeric_limits<double>::max()) {
+                error = true;
             }
         }
     }
