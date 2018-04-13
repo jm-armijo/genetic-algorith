@@ -23,16 +23,17 @@ int main() {
     std::vector<double> expected_vals;
 
     for (unsigned i {0}; i<args_list.size(); ++i) {
-        std::vector<double> args = args_list[0];
+        std::vector<double> args = args_list[i];
         expected_vals.push_back(mistery_func(args[0], args[1]));
     }
 
     unsigned num_args  = 2; //args_list[0].size();
     unsigned num_genes = 5;
-    unsigned pop_size  = 1000;
+    unsigned pop_size  = 5000;
+    unsigned mutation_rate = 5; // 5%
 
     int i {0};
-    Population pop(pop_size, num_args, num_genes); // initialise
+    Population pop(pop_size, num_args, num_genes, mutation_rate); // initialise
     do {
         for (unsigned j {0}; j < expected_vals.size(); ++j) {
             pop.fitness(args_list[j], expected_vals[j]);

@@ -5,7 +5,9 @@
 #include "Population.hpp"
 #include "Random.hpp"
 
-Population::Population(unsigned size, unsigned num_args, unsigned num_genes) : m_size(size)
+Population::Population(unsigned size, unsigned num_args, unsigned num_genes, unsigned mutation_rate) :
+        m_size(size),
+        m_mutation_rate(mutation_rate)
 {
     for(unsigned i {0}; i<m_size; ++i) {
         Individual ind(num_args, num_genes);
@@ -53,8 +55,12 @@ void Population::crossover()
 
 void Population::mutate()
 {
-    int individual = Random::Uniform(0, m_size - 1);
-    m_individuals[individual].mutate();
+    for (unsigned i {0}; i < m_individuals.size(); i+=2) {
+        bool do_mutation = static_cast<unsigned>(Random::Uniform(1, 100)) <= m_mutation_rate;
+        if (do_mutation) {
+            m_individuals[i].mutate();
+        }
+    }
 }
 
 double Population::getTopScore() const

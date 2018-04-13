@@ -5,11 +5,13 @@
 #include "Individual.hpp"
 
 class Population {
+private:
     unsigned m_size;
+    unsigned m_mutation_rate;
     std::vector<Individual> m_individuals;
     
 public:
-    Population(unsigned size, unsigned num_args, unsigned num_genes);
+    Population(unsigned size, unsigned num_args, unsigned num_genes, unsigned mutation_rate);
     void fitness(const std::vector<double> &args, double expected);
     void select();
     void crossover();
