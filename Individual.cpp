@@ -58,10 +58,12 @@ bool Individual::operator < (const Individual& ind) const
 
 void Individual::fitness(const std::vector<double> &args, double expected)
 {
+    double fitness = Gene::fitness(m_genes, args, expected);
+
     ++m_num_evals;
     m_value /= m_num_evals;
     m_value *= (m_num_evals - 1);
-    double new_value = Gene::fitness(m_genes, args, expected) / m_num_evals;
+    double new_value = fitness / m_num_evals;
     m_value += new_value;
     return;
 }
