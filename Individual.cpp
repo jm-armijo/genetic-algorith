@@ -10,7 +10,7 @@ Individual::Individual(unsigned num_args, unsigned num_genes) :
     static int id = 0;
     m_id = id++;
     for (unsigned i {0}; i<m_num_genes; ++i) {
-        m_genes.push_back(Gene(i, num_args));
+        m_genes.push_back(Gene(i, num_args, m_num_genes));
     }
     if (m_genes.size() != m_num_genes)
         std::cout << "genes dont match!" << std::endl;
@@ -37,8 +37,8 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
 
 void Individual::print() const
 {
-    for (const auto &c : m_genes) {
-        std::cout << c.toString();
+    for (const auto &g : m_genes) {
+        std::cout << g.toString();
     }
     std::cout << std::endl;
 }

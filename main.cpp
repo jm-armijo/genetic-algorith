@@ -2,8 +2,7 @@
 #include <iostream>
 
 double mistery_func(double x0, double x1) {
-    return x0 + x0 + x1;
-    //    return ((3*x0) + x1)/x0;
+    return ((3*x0) + x1)/x0;
 }
 
 std::vector<std::vector<double>> getArgs()
@@ -28,8 +27,8 @@ int main() {
     }
 
     unsigned num_args  = 2; //args_list[0].size();
-    unsigned num_genes = 5;
-    unsigned pop_size  = 5000;
+    unsigned num_genes = 8;
+    unsigned pop_size  = 15000;
     unsigned mutation_rate = 5; // 5%
 
     int i {0};

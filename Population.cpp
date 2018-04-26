@@ -21,6 +21,7 @@ void Population::fitness(const std::vector<double> &args, double expected)
     for (auto &ind : m_individuals) {
         ind.fitness(args, expected);
     }
+    sort(m_individuals.begin(), m_individuals.end());
 }
 
 void Population::select()
