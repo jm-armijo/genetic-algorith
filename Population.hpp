@@ -12,10 +12,26 @@ private:
     
 public:
     Population(unsigned size, unsigned num_args, unsigned num_genes, unsigned mutation_rate);
-    void fitness(const std::vector<double> &args, double expected);
-    void select();
-    void crossover();
-    void mutate();
+    //    |
+    //    V
+    void fitness(const std::vector<double> &args, double expected); // <--+
+    //    |                                                         //    |
+    //    V                                                         //    |
+    bool stop(double delta) const; // --> End                       //    |    
+    //    | No                     // Yes                           //    |
+    //    V                                                         //    |
+    void select();                                                  //    |
+    //    |                                                         //    |
+    //    V                                                         //    |
+    void crossover();                                               //    | 
+    //    |                                                         //    |
+    //    V                                                         //    |
+    void mutate();                                                  //    |
+    //    |                                                         //    |
+    //    +---------------------------------------------------------------+
+
+
+
     double getTopScore() const;
     void printTopIndividual() const;
 };

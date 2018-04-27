@@ -64,6 +64,15 @@ void Population::mutate()
     }
 }
 
+bool Population::stop(double delta) const
+{
+    if (m_individuals[0].getValue() <= delta) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 double Population::getTopScore() const
 {
     return m_individuals[0].getValue();
