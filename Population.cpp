@@ -24,6 +24,15 @@ void Population::fitness(const std::vector<double> &args, double expected)
     sort(m_individuals.begin(), m_individuals.end());
 }
 
+bool Population::stop(double delta) const
+{
+    if (m_individuals[0].getValue() <= delta) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void Population::select()
 {
     std::vector<Individual> selected;
@@ -64,14 +73,7 @@ void Population::mutate()
     }
 }
 
-bool Population::stop(double delta) const
-{
-    if (m_individuals[0].getValue() <= delta) {
-        return true;
-    } else {
-        return false;
-    }
-}
+// Utility functions
 
 double Population::getTopScore() const
 {
