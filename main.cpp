@@ -57,8 +57,8 @@ public:
         } while (i++ < m_num_generations);
 
         std::cout << "Stopped after " << (i+1) << " generations." << std::endl;
+        std::cout << "Fitness best individual: " << pop.getTopScore() << std::endl;
         pop.printTopIndividual();
-        std::cout << pop.getTopScore() << std::endl;
     }
 
 private:
