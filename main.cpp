@@ -1,55 +1,82 @@
 #include "Population.hpp"
 #include <iostream>
 
-double mistery_func(double x0, double x1) {
-    return ((3*x0) + x1)/x0;
-}
+class Simulator {
+private:
+    unsigned m_num_generations;
+    unsigned m_num_args;
+    unsigned m_num_genes;
+    unsigned m_pop_size;
+    unsigned m_mutation_rate;
+    std::vector<std::vector<double>> m_args_list;
+    std::vector<double> m_expected_vals;
 
-std::vector<std::vector<double>> getArgs()
-{
-    std::vector<std::vector<double>> args_list;
+public:
+    Simulator(unsigned num_generations, unsigned num_args, unsigned num_genes, unsigned pop_size, unsigned mutation_rate) :
+            m_num_generations(num_generations),
+            m_num_args(num_args),
+            m_num_genes(num_genes),
+            m_pop_size(pop_size),
+            m_mutation_rate(mutation_rate)
+    {
+        m_args_list.push_back({7.0, 2.0});
+        m_args_list.push_back({3.0, 4.0});
 
-    args_list.push_back({7.0, 2.0});
-    args_list.push_back({3.0, 4.0});
-
-    return args_list;
-}
-
-int main() {
-    int num_generations {10000};
-
-    std::vector<std::vector<double>> &&args_list = getArgs();
-    std::vector<double> expected_vals;
-
-    for (unsigned i {0}; i<args_list.size(); ++i) {
-        std::vector<double> args = args_list[i];
-        expected_vals.push_back(mistery_func(args[0], args[1]));
+        for (unsigned i {0}; i<m_args_list.size(); ++i) {
+            std::vector<double> args = m_args_list[i];
+            m_expected_vals.push_back(mistery_func(args[0], args[1]));
+        }
     }
 
-    unsigned num_args  = 2; //args_list[0].size();
-    unsigned num_genes = 8;
-    unsigned pop_size  = 15000;
-    unsigned mutation_rate = 5; // 5%
+    void run()
+    {
+        unsigned i {0};
 
-    int i {0};
-    Population pop(pop_size, num_args, num_genes, mutation_rate); // initialise
-    do {
-        for (unsigned j {0}; j < expected_vals.size(); ++j) {
-            pop.fitness(args_list[j], expected_vals[j]);
-        }
+        // initialise
+        Population pop(m_pop_size, m_num_args, m_num_genes, m_mutation_rate);
+        do {
+            for (unsigned j {0}; j < m_expected_vals.size(); ++j) {
+                pop.fitness(m_args_list[j], m_expected_vals[j]);
+            }
+            //   |
+            //   V
+            if (pop.stop(0)) {
+                break; // Stop
+            }
+            //   | No stop
+            //   V
+            pop.select();
+            //   |
+            //   V
+            pop.crossover();
+            //   |
+            //   V
+            pop.mutate();
+            //   |
+            //   V
+        } while (i++ < m_num_generations);
 
+        std::cout << "Stopped after " << (i+1) << " generations." << std::endl;
         pop.printTopIndividual();
         std::cout << pop.getTopScore() << std::endl;
-        if (pop.getTopScore() == 0) {
-            break;
-        }
+    }
 
-        pop.select(); // dummy call for now
-        pop.crossover();
-        pop.mutate();
-        std::cout << "----------" << std::endl;
-    } while (i++ < num_generations);
+private:
+    double mistery_func(double x0, double x1)
+    {
+        return ((3*x0) + x1)/x0;
+    }
+};
+
+int main() {
+    unsigned num_generations {10000};
+    unsigned num_args  {2};
+    unsigned num_genes {8};
+    unsigned pop_size  {15000};
+    unsigned mutation_rate {5}; // 5%
+
+    Simulator s(num_generations, num_args, num_genes, pop_size, mutation_rate);
+    s.run();
 
     return 0;
 }
-
