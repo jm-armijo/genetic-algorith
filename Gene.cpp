@@ -85,7 +85,7 @@ std::string Gene::toString() const
         }
         response += std::string(1, static_cast<char>(value+42));
     } else {
-        response += std::string(1, static_cast<char>(m_value+48));
+        response += std::to_string(m_value);
     }
     return response + " ";
 }
