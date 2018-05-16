@@ -56,7 +56,7 @@ bool Individual::operator < (const Individual& ind) const
 
 void Individual::fitness(const std::vector<double> &args, double expected)
 {
-    double fitness = Gene::fitness(m_genes, args, expected);
+    double fitness = Gene::fitnessDNA(m_genes, args, expected);
 
     ++m_num_evals;
     m_value /= m_num_evals;

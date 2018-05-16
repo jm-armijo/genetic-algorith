@@ -138,7 +138,7 @@ double Gene::_doOperation(double val1, double val2) const
     return response;
 }
 
-double Gene::_evaluate(const std::vector<Gene>& genes, const std::vector<double> &args) const
+double Gene::_fitness(const std::vector<Gene>& genes, const std::vector<double> &args) const
 {
     double response;
     if (m_type == Type::Operator) {
@@ -148,8 +148,8 @@ double Gene::_evaluate(const std::vector<Gene>& genes, const std::vector<double>
         assert(left_idx < genes.size());
         assert(right_idx < genes.size());
 
-        double left_val  = genes[left_idx]._evaluate(genes, args);
-        double right_val = genes[right_idx]._evaluate(genes, args);
+        double left_val  = genes[left_idx]._fitness(genes, args);
+        double right_val = genes[right_idx]._fitness(genes, args);
         response = _doOperation(left_val, right_val);
     } else {
         response = _parseValue(args);
@@ -158,9 +158,9 @@ double Gene::_evaluate(const std::vector<Gene>& genes, const std::vector<double>
     return response;
 }
 
-double Gene::fitness(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
+double Gene::fitnessDNA(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
 {
     assert(genes.size() > 0);
-    double value = genes[0]._evaluate(genes, args);
+    double value = genes[0]._fitness(genes, args);
     return std::abs(value - expected);
 }
