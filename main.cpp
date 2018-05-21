@@ -29,13 +29,26 @@ public:
         }
     }
 
+    void printGenNum(int i)
+    {
+        std::string prev = std::to_string(i);
+        for (unsigned i {0}; i<prev.length(); ++i) {
+            std::cout << "\b";
+        }
+        std::cout << (i+1);
+        fflush(stdout);
+    }
+
     void run()
     {
         unsigned i {0};
 
         // initialise
+        std::cout << "Processing generation :  ";
         Population pop(m_pop_size, m_num_args, m_num_genes, m_mutation_rate);
         do {
+            printGenNum(i);
+
             for (unsigned j {0}; j < m_expected_vals.size(); ++j) {
                 pop.fitness(m_args_list[j], m_expected_vals[j]);
             }
@@ -57,6 +70,7 @@ public:
             //   V
         } while (i++ < m_num_generations);
 
+        std::cout << std::endl << std::endl;
         std::cout << "Stopped after " << (i+1) << " generations." << std::endl;
         std::cout << "Fitness best individual: " << pop.getTopScore() << std::endl;
         pop.printTopIndividual();
