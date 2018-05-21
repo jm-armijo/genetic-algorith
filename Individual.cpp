@@ -3,15 +3,23 @@
 #include "Individual.hpp"
 #include "Random.hpp"
 
-Individual::Individual(unsigned num_args, unsigned num_genes) :
-        m_num_genes(num_genes),
+unsigned Individual::m_num_args = 0;
+unsigned Individual::m_num_genes = 0;
+
+void Individual::init(unsigned num_args, unsigned num_genes)
+{
+    m_num_args  = num_args;
+    m_num_genes = num_genes;
+}
+
+Individual::Individual() :
         m_num_evals(0),
         m_value(0)
 {
     static int id = 0;
     m_id = id++;
     for (unsigned i {0}; i<m_num_genes; ++i) {
-        m_genes.push_back(Gene(i, num_args, m_num_genes));
+        m_genes.push_back(Gene(i, m_num_args, m_num_genes));
     }
     assert (m_genes.size() == m_num_genes);
 }

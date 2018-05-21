@@ -6,14 +6,17 @@
 #include "Gene.hpp"
 
 class Individual {
+    static unsigned m_num_args;
+    static unsigned m_num_genes;
+
     int m_id;
-    unsigned m_num_genes;
     unsigned m_num_evals;
     double m_value = std::numeric_limits<double>::max();
     std::vector<Gene> m_genes;
 
 public:
-    Individual(unsigned num_args, unsigned num_genes);
+    static void init(unsigned num_args, unsigned num_genes);
+    Individual();
     Individual(const Individual& a, const Individual& b);
     void fitness(const std::vector<double> &args, double expected);
     void mutate();
