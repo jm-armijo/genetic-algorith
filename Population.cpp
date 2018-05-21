@@ -15,9 +15,7 @@ Population::Population(unsigned size, unsigned num_args, unsigned num_genes, uns
 
 void Population::fitness(const std::vector<double> &args, double expected)
 {
-    for (auto &ind : m_individuals) {
-        ind.fitness(args, expected);
-    }
+    std::for_each(m_individuals.begin(), m_individuals.end(), [&](Individual& ind){ind.fitness(args, expected);});
     sort(m_individuals.begin(), m_individuals.end());
 }
 
