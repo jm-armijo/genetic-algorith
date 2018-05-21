@@ -51,10 +51,9 @@ void Population::crossover()
 
 void Population::mutate()
 {
-    for (unsigned i {0}; i < m_individuals.size(); i+=2) {
-        bool do_mutation = static_cast<unsigned>(Random::Uniform(1, 100)) <= m_mutation_rate;
-        if (do_mutation) {
-            m_individuals[i].mutate();
+    for (auto& ind : m_individuals) {
+        if(Random::UnsignedUniform(1, 100) <= m_mutation_rate) {
+            ind.mutate();
         }
     }
 }

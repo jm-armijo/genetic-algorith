@@ -30,7 +30,7 @@ Type Gene::_getNewType() const
     Type type;
     unsigned right_idx = 2*m_gene_id + 2;
     if (right_idx >= m_num_genes) {
-        if (Random::Uniform(0,9) > 4) {
+        if (Random::UnsignedUniform(0,9) > 4) {
             type = Type::Constant;
         } else {
             type = Type::Variable;
@@ -46,11 +46,11 @@ int Gene::_getNewValue() const
 {
     int value;
     if (m_type == Type::Variable) {
-        value = static_cast<unsigned>(Random::Uniform(0, m_num_args-1));
+        value = Random::UnsignedUniform(0, m_num_args-1);
     } else if (m_type == Type::Operator) {
-        value = static_cast<unsigned>(Random::Uniform(0, 3));
+        value = Random::UnsignedUniform(0, 3);
     } else {
-        value = static_cast<unsigned>(Random::Uniform(0, 9));
+        value = Random::UnsignedUniform(0, 9);
     }
     return value;
 }

@@ -5,7 +5,7 @@
 
 class Random {
 public:
-    static int Uniform(int min, int max);
+    static unsigned UnsignedUniform(unsigned min, unsigned max);
     static unsigned RightBinomial(int max);
 
 private:

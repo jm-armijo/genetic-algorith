@@ -31,7 +31,7 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
     m_num_genes = ind1.m_num_genes;
 
     for (unsigned i {0}; i<m_num_genes; ++i) {
-        int selector = Random::Uniform(0,1);
+        unsigned selector = Random::UnsignedUniform(0,1);
         if (selector == 0) {
             m_genes.push_back(ind1.m_genes[i]);
         } else {
@@ -52,7 +52,7 @@ void Individual::print() const
 
 void Individual::mutate()
 {
-    int gen_number = Random::Uniform(0, m_num_genes-1);
+    unsigned gen_number = Random::UnsignedUniform(0, m_num_genes-1);
     m_genes[gen_number].mutate();
     assert (m_genes.size() == m_num_genes);
 }
