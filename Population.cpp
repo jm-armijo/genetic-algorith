@@ -9,11 +9,8 @@ Population::Population(unsigned size, unsigned num_args, unsigned num_genes, uns
         m_size(size),
         m_mutation_rate(mutation_rate)
 {
-    for(unsigned i {0}; i<m_size; ++i) {
-        Individual ind(num_args, num_genes);
-        m_individuals.push_back(ind);
-    }
-    assert(m_individuals.size() == m_size);
+    m_individuals.resize(m_size);
+    std::generate(m_individuals.begin(), m_individuals.end(), Individual());
 }
 
 void Population::fitness(const std::vector<double> &args, double expected)

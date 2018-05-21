@@ -22,6 +22,11 @@ public:
     void mutate();
     void print() const;
     bool operator < (const Individual& ind) const;
+    Individual operator()()
+    {
+        Individual i;
+        return i;
+    };
     double getValue() const;
 };
 
