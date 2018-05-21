@@ -30,17 +30,8 @@ bool Population::stop(double delta) const
 
 void Population::select()
 {
-    std::vector<Individual> selected;
-
-    for (unsigned i {0}; i < m_size; ++i) {
-        int ind = Random::Binomial(2*m_size - 1) - m_size;
-        if (ind < 0) {
-            ind = std::abs(ind+1);
-        }
-        selected.push_back(m_individuals[ind]);
-    }
-
-    assert(m_individuals.size() == selected.size());
+    std::vector<Individual> selected(m_size);
+    std::generate(selected.begin(), selected.end(), [&](){ return m_individuals[Random::RightBinomial(m_size)];});
     m_individuals = std::move(selected);
 }
 
