@@ -8,14 +8,17 @@ enum class Type {Operator, Variable, Constant};
 
 class Gene {
 private:
+    static unsigned m_num_args;
+    static unsigned m_num_genes;
+
     unsigned m_gene_id;
-    unsigned m_num_args;
-    unsigned m_num_genes;
     Type m_type;
     unsigned m_value;
 
 public:
-    Gene(unsigned gene_count, unsigned num_args, unsigned num_genes);
+    static void init(unsigned num_args, unsigned num_genes);
+    Gene() {}
+    Gene(unsigned gene_count);
     void mutate();
     static double fitnessDNA(const std::vector<Gene>& genes, const std::vector<double> &args, double expected);
 

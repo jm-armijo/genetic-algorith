@@ -9,7 +9,6 @@ class Individual {
     static unsigned m_num_args;
     static unsigned m_num_genes;
 
-    int m_id;
     unsigned m_num_evals;
     double m_value = std::numeric_limits<double>::max();
     std::vector<Gene> m_genes;
@@ -22,11 +21,7 @@ public:
     void mutate();
     void print() const;
     bool operator < (const Individual& ind) const;
-    Individual operator()()
-    {
-        Individual i;
-        return i;
-    };
+    Individual operator()() const;
     double getValue() const;
 };
 

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include "Individual.hpp"
@@ -14,14 +15,11 @@ void Individual::init(unsigned num_args, unsigned num_genes)
 
 Individual::Individual() :
         m_num_evals(0),
-        m_value(0)
+        m_value(0),
+        m_genes(m_num_genes)
 {
-    static int id = 0;
-    m_id = id++;
-    for (unsigned i {0}; i<m_num_genes; ++i) {
-        m_genes.push_back(Gene(i, m_num_args, m_num_genes));
-    }
-    assert (m_genes.size() == m_num_genes);
+    unsigned i {0};
+    std::generate(m_genes.begin(), m_genes.end(), [&](){return Gene(i++);});
 }
 
 Individual::Individual(const Individual& ind1, const Individual& ind2) :
@@ -60,6 +58,12 @@ void Individual::mutate()
 bool Individual::operator < (const Individual& ind) const
 {
     return (m_value < ind.m_value);
+}
+
+Individual Individual::operator()() const
+{
+    Individual i;
+    return i;
 }
 
 void Individual::fitness(const std::vector<double> &args, double expected)

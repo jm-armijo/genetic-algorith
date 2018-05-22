@@ -3,10 +3,17 @@
 #include "Gene.hpp"
 #include "Random.hpp"
 
-Gene::Gene(unsigned gene_count, unsigned num_args, unsigned num_genes) :
-        m_gene_id(gene_count),
-        m_num_args(num_args),
-        m_num_genes(num_genes)
+unsigned Gene::m_num_args = 0;
+unsigned Gene::m_num_genes = 0;
+
+void Gene::init(unsigned num_args, unsigned num_genes)
+{
+    m_num_args  = num_args;
+    m_num_genes = num_genes;
+}
+
+Gene::Gene(unsigned gene_count) :
+        m_gene_id(gene_count)
 {
     m_type  = _getNewType();
     m_value = _getNewValue();

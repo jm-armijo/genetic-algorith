@@ -22,11 +22,12 @@ public:
         m_args_list.push_back({7.0, 2.0});
         m_args_list.push_back({3.0, 4.0});
 
-        Individual::init(num_args, num_genes);
-
         for (const auto& args : m_args_list) {
             m_expected_vals.push_back(mistery_func(args[0], args[1]));
         }
+
+        Individual::init(num_args, num_genes);
+        Gene::init(num_args, num_genes);
     }
 
     void printGenNum(int i)
