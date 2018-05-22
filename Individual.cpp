@@ -24,20 +24,14 @@ Individual::Individual() :
 
 Individual::Individual(const Individual& ind1, const Individual& ind2) :
         m_num_evals(0),
-        m_value(0)
+        m_value(0),
+        m_genes(m_num_genes)
 {
-    m_num_genes = ind1.m_num_genes;
+    std::vector<Individual> parents {ind1, ind2};
 
-    for (unsigned i {0}; i<m_num_genes; ++i) {
-        unsigned selector = Random::UnsignedUniform(0,1);
-        if (selector == 0) {
-            m_genes.push_back(ind1.m_genes[i]);
-        } else {
-            m_genes.push_back(ind2.m_genes[i]);
-        }
-    }
-    
-    assert (m_genes.size() == m_num_genes);
+    unsigned selector = Random::UnsignedUniform(0,1);
+    unsigned int i {0};
+    std::generate(m_genes.begin(), m_genes.end(), [&](){return parents[selector].m_genes[i++];});
 }
 
 void Individual::print() const
