@@ -8,6 +8,7 @@ class Population {
 private:
     unsigned m_size;
     unsigned m_mutation_rate;
+    const static double accepted_fitness;
     std::vector<Individual> m_individuals;
     
 public:
@@ -17,8 +18,8 @@ public:
     void fitness(const std::vector<double> &args, double expected); // <--+
     //    |                                                         //    |
     //    V                                                         //    |
-    bool stop(double delta) const; // --> End                       //    |    
-    //    | No                     // Yes                           //    |
+    bool checkEndCondition() const; // --> End                      //    |
+    //    | No         // Yes                                       //    |
     //    V                                                         //    |
     void select();                                                  //    |
     //    |                                                         //    |

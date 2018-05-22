@@ -5,6 +5,8 @@
 #include "Population.hpp"
 #include "Random.hpp"
 
+const double Population::accepted_fitness = 0.00001;
+
 Population::Population(unsigned size, unsigned num_args, unsigned num_genes, unsigned mutation_rate) :
         m_size(size),
         m_mutation_rate(mutation_rate)
@@ -19,13 +21,9 @@ void Population::fitness(const std::vector<double> &args, double expected)
     sort(m_individuals.begin(), m_individuals.end());
 }
 
-bool Population::stop(double delta) const
+bool Population::checkEndCondition() const
 {
-    if (m_individuals[0].getValue() <= delta) {
-        return true;
-    } else {
-        return false;
-    }
+    return (m_individuals[0].getValue() <= accepted_fitness);
 }
 
 void Population::select()

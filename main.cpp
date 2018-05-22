@@ -54,7 +54,7 @@ public:
             }
             //   |
             //   V
-            if (pop.stop(0)) {
+            if (pop.checkEndCondition()) {
                 break; // Stop
             }
             //   | No stop
