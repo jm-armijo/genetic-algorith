@@ -15,7 +15,7 @@ void Individual::init(unsigned num_args, unsigned num_genes)
 
 Individual::Individual() :
         m_num_evals(0),
-        m_value(0),
+        m_value(0.0),
         m_genes(m_num_genes)
 {
     unsigned i {0};
@@ -24,7 +24,7 @@ Individual::Individual() :
 
 Individual::Individual(const Individual& ind1, const Individual& ind2) :
         m_num_evals(0),
-        m_value(0),
+        m_value(0.0),
         m_genes(m_num_genes)
 {
     std::vector<Individual> parents {ind1, ind2};
