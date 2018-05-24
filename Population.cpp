@@ -36,12 +36,11 @@ void Population::select()
 void Population::crossover()
 {
     std::vector<Individual> children;
-
-    for (unsigned i {0}; i < m_individuals.size(); i+=2) {
-        Individual child1(m_individuals[i], m_individuals[i+1]);
-        Individual child2(m_individuals[i], m_individuals[i+1]);
-        children.push_back(child1);
-        children.push_back(child2);
+    // Creates two children (index, index+1) per each pair of parents (i, i+1)
+    for (unsigned i {0}; i < m_individuals.size(); ++i) {
+        // i=0 -> index=0 ; i=1 -> index=0
+        unsigned index {i/2*2};
+        children.push_back(Individual(m_individuals[index], m_individuals[index+1]) );
     }
     assert(m_individuals.size() == children.size());
     m_individuals = std::move(children);
