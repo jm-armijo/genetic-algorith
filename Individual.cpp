@@ -56,8 +56,7 @@ bool Individual::operator < (const Individual& ind) const
 
 Individual Individual::operator()() const
 {
-    Individual i;
-    return i;
+    return Individual();
 }
 
 void Individual::fitness(const std::vector<double> &args, double expected)
