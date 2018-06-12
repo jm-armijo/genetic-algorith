@@ -42,12 +42,12 @@ public:
 
     void run()
     {
-        unsigned i {0};
-
         // initialise
         std::cout << "Processing generation :  ";
-        Population pop(m_pop_size, m_num_args, m_num_genes, m_mutation_rate);
-        do {
+        Population pop(m_pop_size, m_mutation_rate);
+
+        unsigned i;
+        for (i = 0; ; ++i) {
             printGenNum(i);
 
             for (unsigned j {0}; j < m_expected_vals.size(); ++j) {
@@ -55,7 +55,7 @@ public:
             }
             //   |
             //   V
-            if (pop.checkEndCondition()) {
+            if (pop.checkEndCondition() || i>=m_num_generations-1) {
                 break; // Stop
             }
             //   | No stop
@@ -69,7 +69,7 @@ public:
             pop.mutate();
             //   |
             //   V
-        } while (i++ < m_num_generations);
+        }
 
         std::cout << std::endl << std::endl;
         std::cout << "Stopped after " << (i+1) << " generations." << std::endl;
@@ -80,12 +80,12 @@ public:
 private:
     double mistery_func(double x0, double x1)
     {
-        return ((3*x0) + x1)/x0;
+        return ((1.5*x0) + x1)/x0;
     }
 };
 
 int main() {
-    unsigned num_generations {10000};
+    unsigned num_generations {20};
     unsigned num_args  {2};
     unsigned num_genes {8};
     unsigned pop_size  {15000};

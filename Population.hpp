@@ -12,7 +12,7 @@ private:
     std::vector<Individual> m_individuals;
     
 public:
-    Population(unsigned size, unsigned num_args, unsigned num_genes, unsigned mutation_rate);
+    Population(unsigned size, unsigned mutation_rate);
     //    |
     //    V
     void fitness(const std::vector<double> &args, double expected); // <--+
