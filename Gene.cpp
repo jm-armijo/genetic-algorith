@@ -112,9 +112,9 @@ std::ostream& operator<<(std::ostream& o, const Gene& gene)
 //   - = 45 = 3 + 42
 //   / = 47 = 5 + 42
 bool Gene::_isOperator(char op) const {
-    unsigned op_val = static_cast<unsigned>(op) - 42;
+    auto op_val = static_cast<unsigned>(op) - 42;
 
-    bool response = false;
+    auto response = false;
     if (op_val == m_value) {
         response = true;
     } else if (op_val == 5 && m_value == 2) {
@@ -159,14 +159,14 @@ double Gene::_fitness(const std::vector<Gene>& genes, const std::vector<double> 
 {
     double response;
     if (m_type == Type::Operator) {
-        unsigned left_idx  = 2*m_gene_id + 1;
-        unsigned right_idx = 2*m_gene_id + 2;
+        auto left_idx  = 2*m_gene_id + 1;
+        auto right_idx = 2*m_gene_id + 2;
 
         assert(left_idx < genes.size());
         assert(right_idx < genes.size());
 
-        double left_val  = genes[left_idx]._fitness(genes, args);
-        double right_val = genes[right_idx]._fitness(genes, args);
+        auto left_val  = genes[left_idx]._fitness(genes, args);
+        auto right_val = genes[right_idx]._fitness(genes, args);
         response = _doOperation(left_val, right_val);
     } else {
         response = _parseValue(args);
