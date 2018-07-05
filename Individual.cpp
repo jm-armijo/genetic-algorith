@@ -34,12 +34,12 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
     std::generate(m_genes.begin(), m_genes.end(), [&](){return parents[selector].m_genes[i++];});
 }
 
-void Individual::print() const
+std::ostream& operator<<(std::ostream& o, const Individual& ind)
 {
-    for (const auto &g : m_genes) {
+    for (const auto &g : ind.m_genes) {
         o << g << " ";
     }
-    std::cout << std::endl;
+    return o;
 }
 
 void Individual::mutate()

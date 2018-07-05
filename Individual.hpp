@@ -19,10 +19,10 @@ public:
     Individual(const Individual& a, const Individual& b);
     void fitness(const std::vector<double> &args, double expected);
     void mutate();
-    void print() const;
     bool operator < (const Individual& ind) const;
     Individual operator()() const;
     double getValue() const;
+    friend std::ostream& operator<<(std::ostream& o, const Individual& ind);
 };
 
 #endif // __JM_GENETIC_ALGORITHM_INDIVIDUAL

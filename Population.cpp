@@ -76,5 +76,5 @@ double Population::getTopScore() const
 
 void Population::printTopIndividual() const
 {
-    m_individuals[0].print();
+    std::cout << m_individuals[0] << std::endl;
 }
