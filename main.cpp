@@ -19,11 +19,12 @@ public:
             m_pop_size(pop_size),
             m_mutation_rate(mutation_rate)
     {
+        // Test sets
         m_args_list.push_back({7.0, 2.0});
         m_args_list.push_back({3.0, 4.0});
 
         for (const auto& args : m_args_list) {
-            m_expected_vals.push_back(mistery_func(args[0], args[1]));
+            m_expected_vals.push_back(misteryFunc(args[0], args[1]));
         }
 
         Individual::init(num_args, num_genes);
@@ -78,7 +79,7 @@ public:
     }
 
 private:
-    double mistery_func(double x0, double x1)
+    double misteryFunc(double x0, double x1)
     {
         return ((1.5*x0) + x1)/x0;
     }
