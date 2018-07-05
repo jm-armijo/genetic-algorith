@@ -60,10 +60,10 @@ public:
             }
             //   | No stop
             //   V
-            pop.select();
+            auto selected = pop.select();
             //   |
             //   V
-            pop.crossover();
+            pop.crossover(selected);
             //   |
             //   V
             pop.mutate();

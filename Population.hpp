@@ -21,10 +21,10 @@ public:
     bool checkEndCondition() const; // --> End                      //    |
     //    | No         // Yes                                       //    |
     //    V                                                         //    |
-    void select();                                                  //    |
+    std::vector<unsigned> select();                                 //    |
     //    |                                                         //    |
     //    V                                                         //    |
-    void crossover();                                               //    | 
+    void crossover(const std::vector<unsigned>& selected);          //    |
     //    |                                                         //    |
     //    V                                                         //    |
     void mutate();                                                  //    |
