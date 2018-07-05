@@ -17,7 +17,11 @@ Population::Population(unsigned size, unsigned mutation_rate) :
 
 void Population::fitness(const std::vector<double> &args, double expected)
 {
-    std::for_each(m_individuals.begin(), m_individuals.end(), [&](Individual& ind){ind.fitness(args, expected);});
+    // Calculate fitness of each individual
+    auto set_fitness = [&](Individual& ind){ind.fitness(args, expected);};
+    std::for_each(m_individuals.begin(), m_individuals.end(), set_fitness);
+
+    // Sort individuals by fitness (lower to higher, more fitted to less fitted)
     sort(m_individuals.begin(), m_individuals.end());
 }
 
