@@ -6,6 +6,7 @@
 #include "Gene.hpp"
 
 class Individual {
+private:
     static unsigned m_num_args;
     static unsigned m_num_genes;
 
@@ -19,9 +20,10 @@ public:
     Individual(const Individual& a, const Individual& b);
     void fitness(const std::vector<double> &args, double expected);
     void mutate();
+    double getValue() const;
+
     bool operator < (const Individual& ind) const;
     Individual operator()() const;
-    double getValue() const;
     friend std::ostream& operator<<(std::ostream& o, const Individual& ind);
 };
 
