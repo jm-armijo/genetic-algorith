@@ -34,7 +34,7 @@ public:
     void printGenNum(int i)
     {
         std::string prev = std::to_string(i);
-        for (unsigned i {0}; i<prev.length(); ++i) {
+        for (auto i = 0u; i<prev.length(); ++i) {
             std::cout << "\b";
         }
         std::cout << (i+1);
@@ -86,11 +86,11 @@ private:
 };
 
 int main() {
-    unsigned num_generations {20};
-    unsigned num_args  {2};
-    unsigned num_genes {8};
-    unsigned pop_size  {15000};
-    unsigned mutation_rate {5}; // 5%
+    auto num_generations = 2000u;
+    auto num_args        = 2u;
+    auto num_genes       = 8u;
+    auto pop_size        = 15000u;
+    auto mutation_rate   = 5u; // 5%
 
     Simulator s(num_generations, num_args, num_genes, pop_size, mutation_rate);
     s.run();

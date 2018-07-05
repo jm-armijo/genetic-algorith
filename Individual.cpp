@@ -18,7 +18,7 @@ Individual::Individual() :
         m_value(0.0),
         m_genes(m_num_genes)
 {
-    unsigned i {0};
+    auto i = 0u;
     std::generate(m_genes.begin(), m_genes.end(), [&](){return Gene(i++);});
 }
 
@@ -29,8 +29,8 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
 {
     std::vector<Individual> parents {ind1, ind2};
 
-    unsigned selector = Random::UnsignedUniform(0,1);
-    unsigned int i {0};
+    auto selector = Random::UnsignedUniform(0,1);
+    auto i = 0u;
     std::generate(m_genes.begin(), m_genes.end(), [&](){return parents[selector].m_genes[i++];});
 }
 
@@ -44,7 +44,7 @@ std::ostream& operator<<(std::ostream& o, const Individual& ind)
 
 void Individual::mutate()
 {
-    unsigned gen_number = Random::UnsignedUniform(0, m_num_genes-1);
+    auto gen_number = Random::UnsignedUniform(0, m_num_genes-1);
     m_genes[gen_number].mutate();
 
     // Check that the individual's size remain unchanged after mutation
@@ -63,7 +63,7 @@ Individual Individual::operator()() const
 
 void Individual::fitness(const std::vector<double> &args, double expected)
 {
-    double fitness = Gene::fitnessDNA(m_genes, args, expected);
+    auto fitness = Gene::fitnessDNA(m_genes, args, expected);
 
     // Calculates average n values without the need of having all n values up front.
     // This prevents overflow for high values, but may lose precision.
@@ -85,7 +85,7 @@ void Individual::fitness(const std::vector<double> &args, double expected)
     m_value *= (m_num_evals - 1);
 
     // Finally add the new fitness divided by the new value of n
-    double new_value = fitness / m_num_evals;
+    auto new_value = fitness / m_num_evals;
     m_value += new_value;
 
     return;

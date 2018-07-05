@@ -6,12 +6,6 @@
 unsigned Gene::m_num_args = 0;
 unsigned Gene::m_num_genes = 0;
 
-void Gene::init(unsigned num_args, unsigned num_genes)
-{
-    m_num_args  = num_args;
-    m_num_genes = num_genes;
-}
-
 Gene::Gene(unsigned gene_count) :
         m_gene_id(gene_count)
 {
@@ -21,21 +15,35 @@ Gene::Gene(unsigned gene_count) :
 
 void Gene::mutate()
 {
-    unsigned gene_id  = m_gene_id;
-    unsigned num_args = m_num_args;
-    Type type         = m_type;
+    auto gene_id  = m_gene_id;
+    auto num_args = m_num_args;
+    auto type     = m_type;
 
     m_value = _getNewValue();
 
+    // Confirm that the object invariants were not modified
     assert(gene_id  == m_gene_id);
     assert(num_args == m_num_args);
     assert(type     == m_type);
 }
 
+double Gene::fitnessDNA(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
+{
+    assert(genes.size() > 0);
+    auto value = genes[0]._fitness(genes, args);
+    return std::abs(value - expected);
+}
+
+void Gene::init(unsigned num_args, unsigned num_genes)
+{
+    m_num_args  = num_args;
+    m_num_genes = num_genes;
+}
+
 Type Gene::_getNewType() const
 {
     Type type;
-    unsigned right_idx = 2*m_gene_id + 2;
+    auto right_idx = 2*m_gene_id + 2;
     if (right_idx >= m_num_genes) {
         if (Random::UnsignedUniform(0,9) > 4) {
             type = Type::Constant;
@@ -51,7 +59,7 @@ Type Gene::_getNewType() const
 
 int Gene::_getNewValue() const
 {
-    int value;
+    auto value = 0u;
     if (m_type == Type::Variable) {
         value = Random::UnsignedUniform(0, m_num_args-1);
     } else if (m_type == Type::Operator) {
@@ -68,10 +76,10 @@ unsigned Gene::getValue() const {
 
 std::ostream& operator<<(std::ostream& o, const Gene& gene)
 {
-    bool printNl = true;
-    if (m_gene_id > 0) {
-        unsigned prev_depth = 1 + log2(m_gene_id);
-        unsigned depth      = 1 + log2(m_gene_id + 1);
+    auto printNl = true;
+    if (gene.m_gene_id > 0) {
+        auto prev_depth = 1 + log2(gene.m_gene_id);
+        auto depth      = 1 + log2(gene.m_gene_id + 1);
 
         if (prev_depth == depth) {
             printNl = false;
@@ -86,7 +94,7 @@ std::ostream& operator<<(std::ostream& o, const Gene& gene)
     if (gene.m_type == Type::Variable) {
         response += "x" + std::to_string(gene.m_value);
     } else if (gene.m_type == Type::Operator) {
-        unsigned value = gene.m_value;
+        auto value = gene.m_value;
         if (value == 2) {
             value = 5;
         }
@@ -165,11 +173,4 @@ double Gene::_fitness(const std::vector<Gene>& genes, const std::vector<double> 
     }
 
     return response;
-}
-
-double Gene::fitnessDNA(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
-{
-    assert(genes.size() > 0);
-    double value = genes[0]._fitness(genes, args);
-    return std::abs(value - expected);
 }

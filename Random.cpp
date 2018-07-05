@@ -37,7 +37,7 @@ unsigned Random::UnsignedUniform(unsigned min, unsigned max) {
 unsigned Random::RightBinomial(int max) {
     // Binomial for increased range
     std::binomial_distribution<> u_bin_distr(2*max + 1, 0.5);
-    int val = u_bin_distr(m_rand_generator);
+    auto val = u_bin_distr(m_rand_generator);
 
     // Center binomial
     val -= (max + 1);
