@@ -23,7 +23,6 @@ public:
     static double fitnessDNA(const std::vector<Gene>& genes, const std::vector<double> &args, double expected);
 
     unsigned getValue() const;
-    std::string toString() const;
 
 private:
     Type _getNewType() const;
@@ -32,6 +31,9 @@ private:
     double _fitness(const std::vector<Gene>& genes, const std::vector<double> &args) const;
     double _parseValue(const std::vector<double>& args) const;
     double _doOperation(double val1, double val2) const;
+
+    friend std::ostream& operator<<(std::ostream& o, const Gene& g);
 };
+
 
 #endif // __JM_GENETIC_ALGORITHM_GENE

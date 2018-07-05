@@ -37,7 +37,7 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
 void Individual::print() const
 {
     for (const auto &g : m_genes) {
-        std::cout << g.toString();
+        o << g << " ";
     }
     std::cout << std::endl;
 }

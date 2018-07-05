@@ -66,7 +66,7 @@ unsigned Gene::getValue() const {
     return m_value;
 }
 
-std::string Gene::toString() const
+std::ostream& operator<<(std::ostream& o, const Gene& gene)
 {
     bool printNl = true;
     if (m_gene_id > 0) {
@@ -83,18 +83,20 @@ std::string Gene::toString() const
         response = "\n";
     }
 
-    if (m_type == Type::Variable) {
-        response += "x" + std::to_string(m_value);
-    } else if (m_type == Type::Operator) {
-        unsigned value = m_value;
+    if (gene.m_type == Type::Variable) {
+        response += "x" + std::to_string(gene.m_value);
+    } else if (gene.m_type == Type::Operator) {
+        unsigned value = gene.m_value;
         if (value == 2) {
             value = 5;
         }
         response += std::string(1, static_cast<char>(value+42));
     } else {
-        response += std::to_string(m_value);
+        response += std::to_string(gene.m_value);
     }
-    return response + " ";
+
+    o << response;
+    return o;
 }
 
 //   * = 42 = 0 + 42
