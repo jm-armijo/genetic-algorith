@@ -18,8 +18,8 @@ public:
     void fitness(const std::vector<double> &args, double expected); // <--+
     //    |                                                         //    |
     //    V                                                         //    |
-    bool checkEndCondition() const; // --> End                      //    |
-    //    | No         // Yes                                       //    |
+    bool checkEndCondition() const; // -----> End                   //    |
+    //    | No                      //  Yes                         //    |
     //    V                                                         //    |
     std::vector<unsigned> select();                                 //    |
     //    |                                                         //    |
