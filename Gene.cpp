@@ -7,7 +7,7 @@ unsigned Gene::m_num_args = 0;
 unsigned Gene::m_num_genes = 0;
 
 Gene::Gene(unsigned gene_count) :
-        m_gene_id(gene_count)
+        m_idx(gene_count)
 {
     m_type  = _getNewType();
     m_value = _getNewValue();
@@ -15,23 +15,16 @@ Gene::Gene(unsigned gene_count) :
 
 void Gene::mutate()
 {
-    auto gene_id  = m_gene_id;
+    auto gene_id  = m_idx;
     auto num_args = m_num_args;
     auto type     = m_type;
 
     m_value = _getNewValue();
 
     // Confirm that the object invariants were not modified
-    assert(gene_id  == m_gene_id);
+    assert(gene_id  == m_idx);
     assert(num_args == m_num_args);
     assert(type     == m_type);
-}
-
-double Gene::fitnessDNA(const std::vector<Gene>& genes, const std::vector<double> &args, double expected)
-{
-    assert(genes.size() > 0);
-    auto value = genes[0]._fitness(genes, args);
-    return std::abs(value - expected);
 }
 
 void Gene::init(unsigned num_args, unsigned num_genes)
@@ -43,7 +36,7 @@ void Gene::init(unsigned num_args, unsigned num_genes)
 Type Gene::_getNewType() const
 {
     Type type;
-    auto right_idx = 2*m_gene_id + 2;
+    auto right_idx = 2*m_idx + 2;
     if (right_idx >= m_num_genes) {
         if (Random::UnsignedUniform(0,9) > 4) {
             type = Type::Constant;
@@ -70,41 +63,33 @@ int Gene::_getNewValue() const
     return value;
 }
 
-unsigned Gene::getValue() const {
+unsigned Gene::getValue() const
+{
     return m_value;
 }
 
-std::ostream& operator<<(std::ostream& o, const Gene& gene)
+Type Gene::getType() const
 {
-    auto printNl = true;
-    if (gene.m_gene_id > 0) {
-        auto prev_depth = 1 + log2(gene.m_gene_id);
-        auto depth      = 1 + log2(gene.m_gene_id + 1);
+    return m_type;
+}
 
-        if (prev_depth == depth) {
-            printNl = false;
-        }
-    }
+unsigned Gene::getIdx() const
+{
+    return m_idx;
+}
 
+std::string Gene::toString() const
+{
     std::string response;
-    if (printNl) {
-        response = "\n";
-    }
-
-    if (gene.m_type == Type::Variable) {
-        response += "x" + std::to_string(gene.m_value);
-    } else if (gene.m_type == Type::Operator) {
-        auto value = gene.m_value;
-        if (value == 2) {
-            value = 5;
-        }
-        response += std::string(1, static_cast<char>(value+42));
+    if (m_type == Type::Variable) {
+        response = "x" + std::to_string(m_value);
+    } else if (m_type == Type::Operator) {
+        auto value = m_value == 2 ? 5 : m_value;
+        response = std::string(1, static_cast<char>(value+42));
     } else {
-        response += std::to_string(gene.m_value);
+        response = std::to_string(m_value);
     }
-
-    o << response;
-    return o;
+    return response;
 }
 
 //   * = 42 = 0 + 42
@@ -124,7 +109,9 @@ bool Gene::_isOperator(char op) const {
     return response;
 }
 
-double Gene::_parseValue(const std::vector<double>& args) const {
+double Gene::getValue(const std::vector<double>& args) const {
+    assert(m_type != Type::Operator);
+
     double value;
     if (m_type == Type::Variable) {
         value = args[m_value];
@@ -134,7 +121,7 @@ double Gene::_parseValue(const std::vector<double>& args) const {
     return value;
 }
 
-double Gene::_doOperation(double val1, double val2) const
+double Gene::doOperation(double val1, double val2) const
 {
     double response;
     if (val1 == std::numeric_limits<double>::max()) {
@@ -152,25 +139,5 @@ double Gene::_doOperation(double val1, double val2) const
     } else  {
         response = std::numeric_limits<double>::max();
     }
-    return response;
-}
-
-double Gene::_fitness(const std::vector<Gene>& genes, const std::vector<double> &args) const
-{
-    double response;
-    if (m_type == Type::Operator) {
-        auto left_idx  = 2*m_gene_id + 1;
-        auto right_idx = 2*m_gene_id + 2;
-
-        assert(left_idx < genes.size());
-        assert(right_idx < genes.size());
-
-        auto left_val  = genes[left_idx]._fitness(genes, args);
-        auto right_val = genes[right_idx]._fitness(genes, args);
-        response = _doOperation(left_val, right_val);
-    } else {
-        response = _parseValue(args);
-    }
-
     return response;
 }

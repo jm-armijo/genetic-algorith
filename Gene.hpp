@@ -11,7 +11,7 @@ private:
     static unsigned m_num_args;
     static unsigned m_num_genes;
 
-    unsigned m_gene_id;
+    unsigned m_idx;
     Type m_type;
     unsigned m_value;
 
@@ -20,19 +20,18 @@ public:
     Gene() {}
     Gene(unsigned gene_count);
     void mutate();
-    static double fitnessDNA(const std::vector<Gene>& genes, const std::vector<double> &args, double expected);
 
     unsigned getValue() const;
+    Type getType() const;
+    unsigned getIdx() const;
+    std::string toString() const;
+    double getValue(const std::vector<double>& args) const;
+    double doOperation(double val1, double val2) const;
 
 private:
     Type _getNewType() const;
     int  _getNewValue() const;
     bool _isOperator(char op) const;
-    double _fitness(const std::vector<Gene>& genes, const std::vector<double> &args) const;
-    double _parseValue(const std::vector<double>& args) const;
-    double _doOperation(double val1, double val2) const;
-
-    friend std::ostream& operator<<(std::ostream& o, const Gene& g);
 };
 
 

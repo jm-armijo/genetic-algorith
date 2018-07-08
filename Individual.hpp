@@ -14,6 +14,12 @@ private:
     double m_value = std::numeric_limits<double>::max();
     std::vector<Gene> m_genes;
 
+    // Converts an Individual (sub)tree into its flattened string representation.
+    std::string _flatten(unsigned idx = 0) const;
+
+    // Evaluates an Individual (sub)tree.
+    double _evaluate(const std::vector<double> &args, unsigned idx = 0) const;
+
 public:
     static void init(unsigned num_args, unsigned num_genes);
     Individual();

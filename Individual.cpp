@@ -36,10 +36,27 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
 
 std::ostream& operator<<(std::ostream& o, const Individual& ind)
 {
-    for (const auto &g : ind.m_genes) {
-        o << g << " ";
-    }
+    o << ind._flatten();
     return o;
+}
+
+std::string Individual::_flatten(unsigned idx) const
+{
+    std::string response;
+    auto gene = m_genes[idx];
+    if (gene.getType() == Type::Operator) {
+        auto left_idx  = 2*gene.getIdx() + 1;
+        auto right_idx = 2*gene.getIdx() + 2;
+
+        assert(left_idx  < m_genes.size());
+        assert(right_idx < m_genes.size());
+
+        response = "(" + _flatten(left_idx) + gene.toString() + _flatten(right_idx) + ")";
+    } else {
+        response = gene.toString();
+    }
+
+    return response;
 }
 
 void Individual::mutate()
@@ -63,7 +80,7 @@ Individual Individual::operator()() const
 
 void Individual::fitness(const std::vector<double> &args, double expected)
 {
-    auto fitness = Gene::fitnessDNA(m_genes, args, expected);
+    auto fitness = std::abs(_evaluate(args) - expected);
 
     // Calculates average n values without the need of having all n values up front.
     // This prevents overflow for high values, but may lose precision.
@@ -89,6 +106,27 @@ void Individual::fitness(const std::vector<double> &args, double expected)
     m_value += new_value;
 
     return;
+}
+
+double Individual::_evaluate(const std::vector<double> &args, unsigned idx) const
+{
+    double response;
+    auto gene = m_genes[idx];
+    if (gene.getType() == Type::Operator) {
+        auto left_idx  = 2*gene.getIdx() + 1;
+        auto right_idx = 2*gene.getIdx() + 2;
+
+        assert(left_idx  < m_genes.size());
+        assert(right_idx < m_genes.size());
+
+        auto left_val  = _evaluate(args, left_idx);
+        auto right_val = _evaluate(args, right_idx);
+        response = gene.doOperation(left_val, right_val);
+    } else {
+        response = gene.getValue(args);
+    }
+
+    return response;
 }
 
 double Individual::getValue() const
