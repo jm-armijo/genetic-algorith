@@ -1,4 +1,4 @@
-# genetic-algoritmh
+# genetic-algorithm
 
 This code implementats a Genetic Algorithm to indentify an equation by passing its parameters and expected results.
 
