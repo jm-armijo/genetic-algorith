@@ -22,6 +22,13 @@ public:
         // Test sets
         m_args_list.push_back({7.0, 2.0});
         m_args_list.push_back({3.0, 4.0});
+        m_args_list.push_back({8.0, 2.0});
+        m_args_list.push_back({9.0, 2.0});
+        m_args_list.push_back({0.0, 3.0});
+        m_args_list.push_back({1.0, 3.0});
+        m_args_list.push_back({2.0, 3.0});
+        m_args_list.push_back({3.0, 3.0});
+        m_args_list.push_back({4.0, 3.0});
 
         for (const auto& args : m_args_list) {
             m_expected_vals.push_back(misteryFunc(args[0], args[1]));
@@ -81,15 +88,15 @@ public:
 private:
     double misteryFunc(double x0, double x1)
     {
-        return ((1.5*x0) + x1)/x0;
+        return 2.25 + x0/x1 + x0*x0*x0*x0;
     }
 };
 
 int main() {
-    auto num_generations = 2000u;
+    auto num_generations = 50u;
     auto num_args        = 2u;
-    auto num_genes       = 8u;
-    auto pop_size        = 15000u;
+    auto num_genes       = 18u;
+    auto pop_size        = 5000u;
     auto mutation_rate   = 5u; // 5%
 
     Simulator s(num_generations, num_args, num_genes, pop_size, mutation_rate);
