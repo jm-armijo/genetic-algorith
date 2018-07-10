@@ -35,8 +35,7 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
 
 std::ostream& operator<<(std::ostream& o, const Individual& ind)
 {
-    auto s = ind._flatten() + " : " + std::to_string(ind.m_value);
-    o << s;
+    o << ind._flatten();
     return o;
 }
 
