@@ -59,10 +59,13 @@ std::string Individual::_flatten(unsigned idx) const
     return response;
 }
 
-void Individual::mutate()
+void Individual::mutate(unsigned mutation_rate)
 {
-    auto gen_number = Random::UnsignedUniform(0, m_num_genes-1);
-    m_genes[gen_number].mutate();
+    for (auto& gene : m_genes) {
+        if(Random::UnsignedUniform(1, 100) <= mutation_rate) {
+            gene.mutate();
+        }
+    }
 
     // Check that the individual's size remain unchanged after mutation
     assert (m_genes.size() == m_num_genes);

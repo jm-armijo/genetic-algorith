@@ -65,9 +65,7 @@ void Population::crossover(const std::vector<unsigned>& selected)
 void Population::mutate()
 {
     for (auto& ind : m_individuals) {
-        if(Random::UnsignedUniform(1, 100) <= m_mutation_rate) {
-            ind.mutate();
-        }
+        ind.mutate(m_mutation_rate);
     }
 }
 
