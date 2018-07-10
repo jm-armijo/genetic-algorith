@@ -23,7 +23,7 @@ private:
     static unsigned m_num_genes;
 
     unsigned m_num_evals;
-    double m_value = std::numeric_limits<double>::max();
+    double m_value = 0.0; // Fitness function needs this to be initialised to 0.
     std::vector<Gene> m_genes;
 
     // Converts an Individual (sub)tree into its flattened string representation.
