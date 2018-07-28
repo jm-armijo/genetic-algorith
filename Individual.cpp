@@ -27,11 +27,10 @@ Individual::Individual(const Individual& ind1, const Individual& ind2) :
         m_value(0.0),
         m_genes(m_num_genes)
 {
-    std::vector<Individual> parents {ind1, ind2};
-
-    auto selector = Random::UnsignedUniform(0,1);
     auto i = 0u;
-    std::generate(m_genes.begin(), m_genes.end(), [&](){return parents[selector].m_genes[i++];});
+    std::generate(m_genes.begin(), m_genes.end(), [&](){
+        return Random::UnsignedUniform(0,1) ? ind1.m_genes[i++] : ind2.m_genes[i++];
+    });
 }
 
 std::ostream& operator<<(std::ostream& o, const Individual& ind)
@@ -59,10 +58,13 @@ std::string Individual::_flatten(unsigned idx) const
     return response;
 }
 
-void Individual::mutate()
+void Individual::mutate(unsigned mutation_rate)
 {
-    auto gen_number = Random::UnsignedUniform(0, m_num_genes-1);
-    m_genes[gen_number].mutate();
+    for (auto& gene : m_genes) {
+        if(Random::UnsignedUniform(1, 100) <= mutation_rate) {
+            gene.mutate();
+        }
+    }
 
     // Check that the individual's size remain unchanged after mutation
     assert (m_genes.size() == m_num_genes);
