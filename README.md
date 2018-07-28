@@ -1,3 +1,8 @@
+<a href="https://scan.coverity.com/projects/jm-armijo-genetic-algorithm">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/16359/badge.svg"/>
+</a>
+
 # genetic-algorithm
 
 This code implementats a Genetic Algorithm to indentify an equation by passing its parameters and expected results.
